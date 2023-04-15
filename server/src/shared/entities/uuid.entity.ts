@@ -1,8 +1,8 @@
 // ============================ typeorm =================================
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, ObjectIdColumn } from "typeorm";
 
 export abstract class UUIDEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @ObjectIdColumn()
   id!: string;
 
   @Column({

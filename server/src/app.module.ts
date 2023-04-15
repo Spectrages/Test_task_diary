@@ -13,6 +13,11 @@ import databaseConfig from "./config/database.config";
 // ============================ i18n ====================================
 // import { AcceptLanguageResolver, I18nModule } from "nestjs-i18n";
 
+// ============================ modules ==================================
+import { UserModule } from "./app/users/users.module";
+import { AuthModule } from "./app/auth/auth.module";
+import { SecurityModule } from "./app/security/security.module";
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,6 +33,9 @@ import databaseConfig from "./config/database.config";
     //   },
     //   resolvers: [AcceptLanguageResolver],
     // }),
+    UserModule,
+    AuthModule,
+    SecurityModule,
   ],
 })
 export class AppModule {}

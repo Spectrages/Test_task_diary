@@ -1,8 +1,8 @@
 // ============================ typeorm =================================
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, ObjectIdColumn } from "typeorm";
 
 export abstract class IDEntity {
-  @PrimaryGeneratedColumn({ name: "id", type: "bigint" })
+  @ObjectIdColumn()
   id!: number;
 
   @Column({
