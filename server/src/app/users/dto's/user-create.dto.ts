@@ -10,7 +10,8 @@ import {
   Length,
 } from "class-validator";
 
-// ========================== dto's ======================================
+// ========================== entitites ===================================
+import { SingleDeedEntity } from "../entities/single-deed.entity";
 
 export class UserCreateDto {
   @ApiProperty({
@@ -43,5 +44,7 @@ export class UserCreateDto {
   @IsNumber()
   rating!: number;
 
-  deeds: [];
+  deeds: SingleDeedEntity[];
+
+  friends: string[];
 }

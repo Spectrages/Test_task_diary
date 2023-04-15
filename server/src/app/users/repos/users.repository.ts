@@ -8,6 +8,7 @@ import { Repository } from "typeorm";
 // ========================== entities & dto's ==========================
 import { UsersEntity } from "../entities/users.entity";
 import { UserCreateDto } from "../dto's/user-create.dto";
+import { UserSessionDto } from "../dto's/user-session.dto";
 
 @Injectable()
 export class UsersRepository extends Repository<UsersEntity> {
@@ -31,13 +32,18 @@ export class UsersRepository extends Repository<UsersEntity> {
       rating: createUser.rating,
       tag: createUser.tag,
       deeds: createUser.deeds,
+      friends: createUser.friends,
     });
 
     return await this.save(newUser);
   }
 
-  async getById(id: string): Promise<UsersEntity> {
-    return await this.findOneBy({ id: id });
+  async getUserById(userId: string): Promise<UsersEntity> {
+    const res = await this.findOneBy({
+      _id: userId,
+    });
+    console.log(res);
+    return res;
   }
 
   async getUserByTag(userTag: string): Promise<UsersEntity> {
@@ -46,5 +52,9 @@ export class UsersRepository extends Repository<UsersEntity> {
 
   async getUserByEmail(email: string): Promise<UsersEntity> {
     return await this.findOneBy({ email: email });
+  }
+
+  async updateUser(newData: UserSessionDto): Promise<UsersEntity> {
+    return await this.save(newData);
   }
 }

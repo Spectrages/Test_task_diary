@@ -29,7 +29,7 @@ export class SecurityService {
   }
 
   async getUser(id: string): Promise<UsersEntity> {
-    const user = await this.usersRepository.getById(id);
+    const user = await this.usersRepository.getUserById(id);
     if (!user) {
       throw new HttpException(
         `${I18nContext.current().t("errors.user.userDoesNotExist")}`,

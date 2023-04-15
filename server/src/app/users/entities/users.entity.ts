@@ -48,4 +48,7 @@ export class UsersEntity extends UUIDEntity {
 
   @Column({ name: "deeds" })
   deeds!: SingleDeedEntity[];
+
+  @Column({name: "friends"})
+  friends!: string[];
 }

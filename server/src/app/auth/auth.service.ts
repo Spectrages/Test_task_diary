@@ -36,13 +36,13 @@ export class AuthService {
     const userFromDB = await this.usersRepository.getUserByEmail(
       dto.email
     );
-    // if (userFromDB)
-    //   throw new HttpException(
-    //     `${I18nContext.current().t(
-    //       `errors.user.userAlreadyExist`
-    //     )}: ${dto.email}`,
-    //     HttpStatus.BAD_REQUEST
-    //   );
+    if (userFromDB)
+      throw new HttpException(
+        `${I18nContext.current().t(
+          `errors.user.userAlreadyExist`
+        )}: ${dto.email}`,
+        HttpStatus.BAD_REQUEST
+      );
 
     if (userFromDB)
       throw new HttpException("Error", HttpStatus.BAD_REQUEST);
@@ -56,6 +56,7 @@ export class AuthService {
       tag: dto.tag,
       rating: 0,
       deeds: [],
+      friends: [],
     };
 
     const newUser = await this.usersRepository.createUser(userForDB);

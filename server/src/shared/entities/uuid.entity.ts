@@ -3,7 +3,7 @@ import { Column, ObjectIdColumn } from "typeorm";
 
 export abstract class UUIDEntity {
   @ObjectIdColumn()
-  id!: string;
+  _id!: string;
 
   @Column({
     name: "created",

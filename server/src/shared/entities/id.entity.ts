@@ -3,7 +3,7 @@ import { Column, ObjectIdColumn } from "typeorm";
 
 export abstract class IDEntity {
   @ObjectIdColumn()
-  id!: number;
+  _id!: number;
 
   @Column({
     name: "created",

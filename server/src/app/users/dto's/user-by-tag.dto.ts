@@ -12,17 +12,8 @@ import { UUIDDto } from "../../../shared/dtos/uuid.dto";
 
 // ========================== swagger ====================================
 import { ApiProperty } from "@nestjs/swagger";
-import { SingleDeedEntity } from "../entities/single-deed.entity";
 
-export class UserSessionDto extends UUIDDto {
-  @ApiProperty({
-    description: "User email",
-  })
-  @IsNotEmpty()
-  @IsString()
-  @IsEmail()
-  email: string;
-
+export class UserByTagDto extends UUIDDto {
   @ApiProperty({
     description: "User tag",
   })
@@ -37,36 +28,13 @@ export class UserSessionDto extends UUIDDto {
   @IsNumber()
   rating?: number;
 
-  deeds: SingleDeedEntity[];
-
-  friends: string[];
-
   public static fromEntity(entity: UsersEntity) {
     return {
       id: entity._id,
-      email: entity.email,
       tag: entity.tag,
       rating: entity.rating,
-      deeds: entity.deeds,
-      friends: entity.friends,
       created: entity.created.valueOf(),
       updated: entity.updated.valueOf(),
     };
-  }
-
-  public static fromJwt(dto: UserSessionDto): UserSessionDto {
-    if (!dto) {
-      return;
-    }
-    const outputDto = new UserSessionDto();
-    outputDto.id = dto.id;
-    outputDto.email = dto.email;
-    outputDto.tag = dto.tag;
-    outputDto.rating = dto.rating;
-    outputDto.deeds = dto.deeds;
-    outputDto.friends = dto.friends;
-    outputDto.created = dto.created.valueOf();
-    outputDto.updated = dto.updated.valueOf();
-    return dto;
   }
 }
