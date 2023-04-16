@@ -1,9 +1,12 @@
 // ========================== nest ===================================
-import { createParamDecorator, ExecutionContext } from "@nestjs/common";
+import {
+  createParamDecorator,
+  ExecutionContext,
+} from "@nestjs/common";
 
 // ========================== dto's & types ==========================
 import { IRequest } from "../../../shared/types/request.interface";
-import { UserSessionDto } from "../dto's/user-session.dto"
+import { UserSessionDto } from "../dto's/user-session.dto";
 
 export const User = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {

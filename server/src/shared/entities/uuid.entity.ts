@@ -1,9 +1,9 @@
 // ============================ typeorm =================================
-import { Column, ObjectIdColumn } from "typeorm";
+import { Column, ObjectID, ObjectIdColumn } from "typeorm";
 
 export abstract class UUIDEntity {
   @ObjectIdColumn()
-  _id!: string;
+  _id!: ObjectID;
 
   @Column({
     name: "created",

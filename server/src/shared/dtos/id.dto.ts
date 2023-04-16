@@ -1,11 +1,12 @@
 // ========================== swagger ====================================
 import { ApiProperty } from "@nestjs/swagger";
+import { ObjectID } from "typeorm";
 
 export abstract class IDDto {
   @ApiProperty({
     description: "Entry id",
   })
-  id!: number;
+  _id!: ObjectID;
 
   @ApiProperty({
     description: "Date created",

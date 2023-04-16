@@ -12,6 +12,7 @@ import {
 
 // ========================== entitites ===================================
 import { SingleDeedEntity } from "../entities/single-deed.entity";
+import { ObjectID } from "typeorm";
 
 export class UserCreateDto {
   @ApiProperty({
@@ -44,7 +45,7 @@ export class UserCreateDto {
   @IsNumber()
   rating!: number;
 
-  deeds: SingleDeedEntity[];
+  deeds: ObjectID[];
 
-  friends: string[];
+  friends: ObjectID[];
 }

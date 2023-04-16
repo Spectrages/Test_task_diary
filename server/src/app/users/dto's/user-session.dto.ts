@@ -12,7 +12,8 @@ import { UUIDDto } from "../../../shared/dtos/uuid.dto";
 
 // ========================== swagger ====================================
 import { ApiProperty } from "@nestjs/swagger";
-import { SingleDeedEntity } from "../entities/single-deed.entity";
+import { SingleDeedDto } from "./deed.dto";
+import { ObjectID } from "typeorm";
 
 export class UserSessionDto extends UUIDDto {
   @ApiProperty({
@@ -37,13 +38,13 @@ export class UserSessionDto extends UUIDDto {
   @IsNumber()
   rating?: number;
 
-  deeds: SingleDeedEntity[];
+  deeds: ObjectID[];
 
-  friends: string[];
+  friends: ObjectID[];
 
   public static fromEntity(entity: UsersEntity) {
     return {
-      id: entity._id,
+      _id: entity._id,
       email: entity.email,
       tag: entity.tag,
       rating: entity.rating,
@@ -58,8 +59,9 @@ export class UserSessionDto extends UUIDDto {
     if (!dto) {
       return;
     }
+
     const outputDto = new UserSessionDto();
-    outputDto.id = dto.id;
+    outputDto._id = dto._id;
     outputDto.email = dto.email;
     outputDto.tag = dto.tag;
     outputDto.rating = dto.rating;

@@ -1,9 +1,8 @@
 // ========================== typeorm ===================================
-import { Column, Entity, Index } from "typeorm";
+import { Column, Entity, Index, ObjectID } from "typeorm";
 
-// ========================== entities ==================================
+// ========================== entities & dto's ==================================
 import { UUIDEntity } from "../../../shared/entities/uuid.entity";
-import { SingleDeedEntity } from "./single-deed.entity";
 
 // ========================== swagger ====================================
 import { ApiProperty } from "@nestjs/swagger";
@@ -47,8 +46,8 @@ export class UsersEntity extends UUIDEntity {
   rating!: number;
 
   @Column({ name: "deeds" })
-  deeds!: SingleDeedEntity[];
+  deeds!: ObjectID[];
 
-  @Column({name: "friends"})
-  friends!: string[];
+  @Column({ name: "friends" })
+  friends!: ObjectID[];
 }

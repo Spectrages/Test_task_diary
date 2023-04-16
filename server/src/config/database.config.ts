@@ -3,6 +3,7 @@ import { MongoConnectionOptions } from "typeorm/driver/mongodb/MongoConnectionOp
 
 // ========================== entities ==========================
 import { UsersEntity } from "src/app/users/entities/users.entity";
+import { SingleDeedEntity } from "src/app/users/entities/single-deed.entity";
 
 // ========================== migrations ==========================
 
@@ -16,7 +17,7 @@ const databaseConfig: MongoConnectionOptions = {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   synchronize: true,
-  entities: [UsersEntity],
+  entities: [UsersEntity, SingleDeedEntity],
   migrations: [],
 };
 

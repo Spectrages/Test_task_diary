@@ -36,7 +36,10 @@ export class AuthService {
     const userFromDB = await this.usersRepository.getUserByEmail(
       dto.email
     );
-    if (userFromDB)
+    const userFromDBTag = await this.usersRepository.getUserByTag(
+      dto.tag
+    );
+    if (userFromDB || userFromDBTag)
       throw new HttpException(
         `${I18nContext.current().t(
           `errors.user.userAlreadyExist`

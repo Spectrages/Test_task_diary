@@ -59,7 +59,7 @@ export class AuthController {
   async refreshToken(
     @User() currentUser: UserSessionDto
   ): Promise<TokenDto> {
-    const user = await this.securityService.getUser(currentUser.id);
+    const user = await this.securityService.getUser(currentUser._id);
     return await this.securityService.generateJwt(user);
   }
 }

@@ -8,6 +8,7 @@ import { UUIDEntity } from "../../../shared/entities/uuid.entity";
 import { ApiProperty } from "@nestjs/swagger";
 
 @Entity({ name: "single deed" })
+
 export class SingleDeedEntity extends UUIDEntity {
   @ApiProperty({
     example: "Name",

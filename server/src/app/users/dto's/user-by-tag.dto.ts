@@ -30,7 +30,7 @@ export class UserByTagDto extends UUIDDto {
 
   public static fromEntity(entity: UsersEntity) {
     return {
-      id: entity._id,
+      _id: entity._id,
       tag: entity.tag,
       rating: entity.rating,
       created: entity.created.valueOf(),

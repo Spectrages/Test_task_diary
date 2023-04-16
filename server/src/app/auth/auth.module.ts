@@ -1,5 +1,5 @@
 // ========================== nest ==========================
-import { Module } from "@nestjs/common";
+import { Module, forwardRef } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 // ========================== entities ==========================
@@ -17,15 +17,10 @@ import { SecurityModule } from "../security/security.module";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      UsersEntity,
-    ]),
-    SecurityModule,
+    TypeOrmModule.forFeature([UsersEntity]),
+    forwardRef(() => SecurityModule),
   ],
-  providers: [
-    AuthService,
-    UsersRepository,
-  ],
+  providers: [AuthService, UsersRepository],
   exports: [AuthService],
   controllers: [AuthController],
 })

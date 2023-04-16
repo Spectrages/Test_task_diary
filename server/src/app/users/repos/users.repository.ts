@@ -1,9 +1,9 @@
 // ========================== nest ======================================
-import { Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable } from "@nestjs/common";
 
 // ========================== typeorm ===================================
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { ObjectID, Repository } from "typeorm";
 
 // ========================== entities & dto's ==========================
 import { UsersEntity } from "../entities/users.entity";
@@ -23,6 +23,11 @@ export class UsersRepository extends Repository<UsersEntity> {
     );
   }
 
+  async getUserById(userId): Promise<UsersEntity> {
+    const _id = userId;
+    return await this.findOneByOrFail(_id);
+  }
+
   async createUser(createUser: UserCreateDto): Promise<UsersEntity> {
     const newUser = await this.create({
       created: new Date(),
@@ -34,16 +39,7 @@ export class UsersRepository extends Repository<UsersEntity> {
       deeds: createUser.deeds,
       friends: createUser.friends,
     });
-
     return await this.save(newUser);
-  }
-
-  async getUserById(userId: string): Promise<UsersEntity> {
-    const res = await this.findOneBy({
-      _id: userId,
-    });
-    console.log(res);
-    return res;
   }
 
   async getUserByTag(userTag: string): Promise<UsersEntity> {
@@ -54,7 +50,12 @@ export class UsersRepository extends Repository<UsersEntity> {
     return await this.findOneBy({ email: email });
   }
 
-  async updateUser(newData: UserSessionDto): Promise<UsersEntity> {
+  async updateUser(newData: UsersEntity): Promise<UsersEntity> {
     return await this.save(newData);
+  }
+
+  async deleteUser(user: UserSessionDto): Promise<HttpStatus> {
+    await this.delete(user._id);
+    return HttpStatus.OK;
   }
 }

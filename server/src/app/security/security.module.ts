@@ -21,21 +21,15 @@ import { UsersRepository } from "../users/repos/users.repository";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      UsersEntity,
-    ]),
+    TypeOrmModule.forFeature([UsersEntity]),
     PassportModule.register({ defaultStrategy: "jwt" }),
     JwtModule.register({
-      secret: 'process.env.PRIVATE_KEY',
+      secret: "process.env.PRIVATE_KEY",
       signOptions: { expiresIn: "3600s" },
     }),
   ],
   controllers: [],
-  providers: [
-    SecurityService,
-    JwtStrategy,
-    UsersRepository,
-  ],
+  providers: [SecurityService, JwtStrategy, UsersRepository],
   exports: [SecurityService],
 })
 export class SecurityModule {}
