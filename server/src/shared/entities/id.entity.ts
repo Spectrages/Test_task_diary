@@ -1,9 +1,10 @@
 // ============================ typeorm =================================
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, ObjectIdColumn } from "typeorm";
+import { ObjectID } from "mongodb";
 
 export abstract class IDEntity {
-  @PrimaryGeneratedColumn({ name: "id", type: "bigint" })
-  id!: number;
+  @ObjectIdColumn()
+  _id!: ObjectID;
 
   @Column({
     name: "created",

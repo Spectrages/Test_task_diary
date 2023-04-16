@@ -1,0 +1,13 @@
+{
+  "user": {
+    "userDoesNotExist": "Такого пользователя не существует",
+    "userAlreadyExist": "Пользователь уже существует",
+    "noAccess": "Нет доступа"
+  },
+  "authorization": {
+    "unAuthorized": "Нет доступа"
+  },
+  "deed": {
+    "deedDoesNotExist": "Такого дела не существует"
+  }
+}

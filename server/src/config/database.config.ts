@@ -2,6 +2,8 @@ import "dotenv/config";
 import { MongoConnectionOptions } from "typeorm/driver/mongodb/MongoConnectionOptions";
 
 // ========================== entities ==========================
+import { UsersEntity } from "src/app/users/entities/users.entity";
+import { SingleDeedEntity } from "src/app/users/entities/single-deed.entity";
 
 // ========================== migrations ==========================
 
@@ -14,8 +16,8 @@ const databaseConfig: MongoConnectionOptions = {
   database: "test",
   useUnifiedTopology: true,
   useNewUrlParser: true,
-  synchronize: false,
-  entities: [],
+  synchronize: true,
+  entities: [UsersEntity, SingleDeedEntity],
   migrations: [],
 };
 

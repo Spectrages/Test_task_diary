@@ -1,24 +1,61 @@
-import { Injectable } from "@nestjs/common";
+// ========================== nest ======================================
+import { HttpStatus, Injectable } from "@nestjs/common";
+
+// ========================== typeorm ===================================
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { ObjectID, Repository } from "typeorm";
+
+// ========================== entities & dto's ==========================
+import { UsersEntity } from "../entities/users.entity";
+import { UserCreateDto } from "../dto's/user-create.dto";
+import { UserSessionDto } from "../dto's/user-session.dto";
 
 @Injectable()
-export class UserRepository extends Repository<UserEntity> {
+export class UsersRepository extends Repository<UsersEntity> {
   constructor(
-    @InjectRepository(UserEntity) userRepository: Repository<UserEntity>
+    @InjectRepository(UsersEntity)
+    usersRepository: Repository<UsersEntity>
   ) {
     super(
-      userRepository.target,
-      userRepository.manager,
-      userRepository.queryRunner
+      usersRepository.target,
+      usersRepository.manager,
+      usersRepository.queryRunner
     );
   }
 
-  async getAllUsers(active: boolean) {
-    return await this.find({
-      where: {
-        isActive: active,
-      },
+  async getUserById(userId): Promise<UsersEntity> {
+    const _id = userId;
+    return await this.findOneByOrFail(_id);
+  }
+
+  async createUser(createUser: UserCreateDto): Promise<UsersEntity> {
+    const newUser = await this.create({
+      created: new Date(),
+      updated: new Date(),
+      email: createUser.email,
+      password: createUser.password,
+      rating: createUser.rating,
+      tag: createUser.tag,
+      deeds: createUser.deeds,
+      friends: createUser.friends,
     });
+    return await this.save(newUser);
+  }
+
+  async getUserByTag(userTag: string): Promise<UsersEntity> {
+    return await this.findOneBy({ tag: userTag });
+  }
+
+  async getUserByEmail(email: string): Promise<UsersEntity> {
+    return await this.findOneBy({ email: email });
+  }
+
+  async updateUser(newData: UsersEntity): Promise<UsersEntity> {
+    return await this.save(newData);
+  }
+
+  async deleteUser(user: UserSessionDto): Promise<HttpStatus> {
+    await this.delete(user._id);
+    return HttpStatus.OK;
   }
 }
