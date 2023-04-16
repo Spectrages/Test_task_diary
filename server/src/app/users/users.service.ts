@@ -1,9 +1,5 @@
 // ============================ nest ====================================
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 
 // ========================== i18n ======================================
 import { I18nContext } from "nestjs-i18n";
@@ -35,9 +31,7 @@ export class UsersService {
     currentUser: UserSessionDto,
     userTag: string
   ): Promise<UsersEntity> {
-    const user = await this.userRepository.getUserById(
-      currentUser._id
-    );
+    const user = await this.userRepository.getUserById(currentUser._id);
 
     const newFriend = await this.userRepository.getUserByTag(userTag);
 
@@ -47,8 +41,7 @@ export class UsersService {
         HttpStatus.NOT_FOUND
       );
 
-    user.friends.push(newFriend._id);
-    user.updated = new Date();
+    user.friends.push(newFriend.tag);
     return await this.userRepository.updateUser(user);
   }
 
@@ -56,46 +49,57 @@ export class UsersService {
     currentUser: UserSessionDto,
     deed: CreateSingleDeedDto
   ): Promise<UsersEntity> {
-    const user = await this.userRepository.getUserById(
-      currentUser._id
-    );
+    const user = await this.userRepository.getUserById(currentUser._id);
+    if (!user)
+      throw new HttpException(
+        `${I18nContext.current().t("errors.user.userDoesNotExist")}`,
+        HttpStatus.NOT_FOUND
+      );
+
     const newDeed = await this.deedRepository.createDeed(deed);
+    if (!newDeed)
+      throw new HttpException(
+        `${I18nContext.current().t("errors.deed.deedDoesNotExist")}`,
+        HttpStatus.NOT_FOUND
+      );
+
     user.deeds.push(newDeed._id);
-    user.updated = new Date();
     return await this.userRepository.updateUser(user);
   }
 
   async getDeedsByTag(
     userTag: string,
     currentUser: UserSessionDto
-  ): Promise<ObjectID[]> {
+  ): Promise<SingleDeedEntity[]> {
     const user = await this.userRepository.getUserByTag(userTag);
 
-    const current = await this.userRepository.getUserById(
-      currentUser._id
-    );
+    const current = await this.userRepository.getUserById(currentUser._id);
     const friendList = current.friends;
 
     if (friendList.length < 1)
       throw new HttpException(
-        "The user is not your friend!",
+        `${I18nContext.current().t("errors.user.noAccess")}`,
         HttpStatus.BAD_REQUEST
       );
 
-    const res = friendList.map(
-      (item) => item.toString() === user._id.toString()
-    );
+    const res = friendList.map((item) => item === user.tag.toString());
 
     if (res.includes(false))
       throw new HttpException(
-        "The user is not your friend!",
+        `${I18nContext.current().t("errors.user.noAccess")}`,
         HttpStatus.BAD_REQUEST
       );
-      console.log(user.deeds)
-    return user.deeds;
+
+    const deedsArray = await this.deedRepository.getAllDeed();
+    const deedIdArr = user.deeds.map((item) => item);
+
+    return deedsArray.filter(
+      (item) => item._id.toString() !== deedIdArr.toString()
+    );
   }
 
   async removeFromFriendList(userTag: string, user: UserSessionDto) {
+    
     const friend = await this.userRepository.getUserByTag(userTag);
     if (!friend)
       throw new HttpException(
@@ -103,9 +107,10 @@ export class UsersService {
         HttpStatus.NOT_FOUND
       );
 
-    let currentUser = await this.getUserByTag(user.tag);
+    let currentUser = await this.userRepository.getUserById(user._id);
+
     const newFriends = currentUser.friends.filter(
-      (item) => item === friend._id
+      (item) => item === friend.tag
     );
     currentUser.friends = newFriends;
     return await this.userRepository.updateUser(currentUser);
@@ -122,7 +127,7 @@ export class UsersService {
     const result = await this.deedRepository.deleteById(deedId);
     if (result !== 200)
       throw new HttpException(
-        `${I18nContext.current().t("errors.user.userDoesNotExist")}`,
+        `${I18nContext.current().t("errors.deed.deedDoesNotExist")}`,
         HttpStatus.NOT_FOUND
       );
     const newUser = await this.userRepository.getUserById(user._id);
@@ -139,12 +144,39 @@ export class UsersService {
     info: SingleDeedDto
   ): Promise<SingleDeedEntity> {
     const currentDeed = await this.deedRepository.getDeedById(deedId);
-    // if (!currentDeed)
-    //   throw new HttpException(
-    //     `${I18nContext.current().t("errors.deed.deedDoesNotExist")}`,
-    //     HttpStatus.NOT_FOUND
-    //   );
+    const currentUser = await this.userRepository.getUserById(user._id);
+
+    const res = currentUser.deeds.map(
+      (item) => item.toString() === deedId.toString()
+    );
+    if (res.includes(false))
+      throw new HttpException(
+        `${I18nContext.current().t("errors.user.noAccess")}`,
+        HttpStatus.BAD_REQUEST
+      );
+
+    if (!currentDeed)
+      throw new HttpException(
+        `${I18nContext.current().t("errors.deed.deedDoesNotExist")}`,
+        HttpStatus.NOT_FOUND
+      );
+
     Object.assign(currentDeed, info);
     return await this.deedRepository.updateDeed(currentDeed);
+  }
+
+  async getDeeds(user: UserSessionDto): Promise<SingleDeedEntity[]> {
+    const currentUser = await this.userRepository.getUserById(user._id);
+    if (!currentUser)
+      throw new HttpException(
+        `${I18nContext.current().t("errors.user.userDoesNotExist")}`,
+        HttpStatus.NOT_FOUND
+      );
+
+    const deedIdArr = currentUser.deeds.map((item) => item);
+    const deedsArray = await this.deedRepository.getAllDeed();
+    return deedsArray.filter(
+      (item) => item._id.toString() !== deedIdArr.toString()
+    );
   }
 }

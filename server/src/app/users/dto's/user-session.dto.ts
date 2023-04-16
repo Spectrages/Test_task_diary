@@ -40,7 +40,7 @@ export class UserSessionDto extends UUIDDto {
 
   deeds: ObjectID[];
 
-  friends: ObjectID[];
+  friends: string[];
 
   public static fromEntity(entity: UsersEntity) {
     return {

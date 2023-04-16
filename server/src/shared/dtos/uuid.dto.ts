@@ -1,6 +1,6 @@
 // ========================== swagger ====================================
 import { ApiProperty } from "@nestjs/swagger";
-import { ObjectID } from "typeorm";
+import { ObjectID } from "mongodb";
 
 export abstract class UUIDDto {
   @ApiProperty({

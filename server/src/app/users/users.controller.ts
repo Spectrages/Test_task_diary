@@ -36,6 +36,84 @@ import { SingleDeedEntity } from "./entities/single-deed.entity";
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  // ! // BLOCK WITH GET REQUESTS
+  //=============================== user can get deeds his friend ========================================
+  @Get("/:userTag/deeds")
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Get a friend's deeds" })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "HttpStatus:200:OK",
+    type: UserSessionDto,
+    isArray: false,
+  })
+  @UsePipes(new ValidationPipe())
+  async getDeedsByTag(
+    @Param("userTag") userTag: string,
+    @User() user: UserSessionDto
+  ): Promise<SingleDeedEntity[]> {
+    return await this.usersService.getDeedsByTag(userTag, user);
+  }
+
+  //=============================== user can get his deeds ================================================
+  @Get("/deeds")
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Get a his deeds" })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "HttpStatus:200:OK",
+    type: UserSessionDto,
+    isArray: false,
+  })
+  @UsePipes(new ValidationPipe())
+  async getDeeds(
+    @User() user: UserSessionDto
+  ): Promise<SingleDeedEntity[]> {
+    return await this.usersService.getDeeds(user);
+  }
+
+  //=============================== user can get user by tag =============================================
+  @Get("/:userTag")
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Get user by tag" })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "HttpStatus:200:OK",
+    type: UserByTagDto,
+    isArray: false,
+  })
+  @UsePipes(new ValidationPipe())
+  async getUserByTag(
+    @Param("userTag") userTag: string
+  ): Promise<UserByTagDto> {
+    const userFromDB = await this.usersService.getUserByTag(userTag);
+    return await UserByTagDto.fromEntity(userFromDB);
+  }
+
+  // ! // BLOCK WITH POST REQUESTS
+  //=============================== user can create new deed =============================================
+  @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Create new deed" })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "HttpStatus:200:OK",
+    type: UserSessionDto,
+    isArray: false,
+  })
+  @UsePipes(new ValidationPipe())
+  async createDeed(
+    @Body() deed: CreateSingleDeedDto,
+    @User() user: UserSessionDto
+  ): Promise<UserSessionDto> {
+    const userWithDeedFromDB = await this.usersService.createDeed(
+      user,
+      deed
+    );
+    return await UserSessionDto.fromEntity(userWithDeedFromDB);
+  }
+
+  // ! // BLOCK WITH PUT REQUESTS
   //=============================== user can update his deed =============================================
   @Put("/deeds/:deedId")
   @UseGuards(JwtAuthGuard)
@@ -55,6 +133,29 @@ export class UsersController {
     return await this.usersService.updateDeedById(deedId, user, info);
   }
 
+  //=============================== user can add user in friendList ======================================
+  @Put("/:userTag")
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Add user in friend list" })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "HttpStatus:200:OK",
+    type: UserSessionDto,
+    isArray: false,
+  })
+  @UsePipes(new ValidationPipe())
+  async addToFriendList(
+    @Param("userTag") userTag: string,
+    @User() user: UserSessionDto
+  ): Promise<UserSessionDto> {
+    const userFromDB = await this.usersService.addToFriendList(
+      user,
+      userTag
+    );
+    return await UserSessionDto.fromEntity(userFromDB);
+  }
+
+  // ! // BLOCK WITH DELETE REQUESTS
   //=============================== user can delete his deed =============================================
   @Delete("/:deedId")
   @UseGuards(JwtAuthGuard)
@@ -76,6 +177,7 @@ export class UsersController {
     );
     return await UserSessionDto.fromEntity(userFromDB);
   }
+
   //=============================== user can delete his account ==========================================
   @Delete()
   @UseGuards(JwtAuthGuard)
@@ -104,7 +206,7 @@ export class UsersController {
     isArray: false,
   })
   @UsePipes(new ValidationPipe())
-  async deleteUserByTag(
+  async removeFromFriendList(
     @User() user: UserSessionDto,
     @Param("userTag") userTag: string
   ): Promise<UserSessionDto> {
@@ -113,85 +215,5 @@ export class UsersController {
       user
     );
     return await UserSessionDto.fromEntity(userFromDB);
-  }
-
-  //=============================== user can get deeds his friend ========================================
-  @Get("/:userTag/deeds")
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: "Get a friend's deeds" })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: "HttpStatus:200:OK",
-    type: UserSessionDto,
-    isArray: false,
-  })
-  @UsePipes(new ValidationPipe())
-  async getDeedsByTag(
-    @Param("userTag") userTag: string,
-    @User() user: UserSessionDto
-  ): Promise<ObjectID[]> {
-    return await this.usersService.getDeedsByTag(userTag, user);
-  }
-
-  //=============================== user can create new deed =============================================
-  @Post()
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: "Create new deed" })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: "HttpStatus:200:OK",
-    type: UserSessionDto,
-    isArray: false,
-  })
-  @UsePipes(new ValidationPipe())
-  async createDeed(
-    @Body() deed: CreateSingleDeedDto,
-    @User() user: UserSessionDto
-  ): Promise<UserSessionDto> {
-    const userWithDeedFromDB = await this.usersService.createDeed(
-      user,
-      deed
-    );
-    return await UserSessionDto.fromEntity(userWithDeedFromDB);
-  }
-
-  //=============================== user can add user in friendList ======================================
-  @Put("/:userTag")
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: "Add user in friend list" })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: "HttpStatus:200:OK",
-    type: UserSessionDto,
-    isArray: false,
-  })
-  @UsePipes(new ValidationPipe())
-  async addToFriendList(
-    @Param("userTag") userTag: string,
-    @User() user: UserSessionDto
-  ) {
-    const userFromDB = await this.usersService.addToFriendList(
-      user,
-      userTag
-    );
-    return await UserSessionDto.fromEntity(userFromDB);
-  }
-
-  //=============================== user can get user by tag =============================================
-  @Get("/:userTag")
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: "Get user by tag" })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: "HttpStatus:200:OK",
-    type: UserByTagDto,
-    isArray: false,
-  })
-  @UsePipes(new ValidationPipe())
-  async getUserByTag(
-    @Param("userTag") userTag: string
-  ): Promise<UserByTagDto> {
-    const userFromDB = await this.usersService.getUserByTag(userTag);
-    return await UserByTagDto.fromEntity(userFromDB);
   }
 }

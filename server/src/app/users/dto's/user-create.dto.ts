@@ -47,5 +47,5 @@ export class UserCreateDto {
 
   deeds: ObjectID[];
 
-  friends: ObjectID[];
+  friends: string[];
 }

@@ -3,7 +3,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 // ========================== validator ==================================
 import { IsNotEmpty, IsString } from "class-validator";
-import { UUIDDto } from "src/shared/dtos/uuid.dto";
+import { UUIDDto } from "../../../shared/dtos/uuid.dto";
 
 export class CreateSingleDeedDto extends UUIDDto {
   @ApiProperty({

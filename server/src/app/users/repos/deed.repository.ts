@@ -50,4 +50,8 @@ export class SingleDeedRepository extends Repository<SingleDeedEntity> {
   ): Promise<SingleDeedEntity> {
     return await this.save(deed);
   }
+
+  async getAllDeed(): Promise<SingleDeedEntity[]> {
+    return await this.find();
+  }
 }

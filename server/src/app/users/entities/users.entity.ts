@@ -49,5 +49,5 @@ export class UsersEntity extends UUIDEntity {
   deeds!: ObjectID[];
 
   @Column({ name: "friends" })
-  friends!: ObjectID[];
+  friends!: string[];
 }
