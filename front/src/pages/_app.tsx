@@ -1,6 +1,19 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+import type { AppProps } from "next/app";
+import Providers from "../redux/provider";
+import theme from "@/theme/mainTheme";
+import { ThemeProvider } from "@emotion/react";
+import ErrorBoundaryComp from "@/components/error-boundary.comp";
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
+const App = ({ Component, pageProps }: AppProps) => {
+  return (
+    <ErrorBoundaryComp>
+      <Providers>
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />;
+        </ThemeProvider>
+      </Providers>
+    </ErrorBoundaryComp>
+  );
+};
+
+export default App;

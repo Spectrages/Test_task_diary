@@ -18,8 +18,8 @@ const start = async () => {
       .addTag("Test task")
       .build();
   
-    // const document = SwaggerModule.createDocument(app, swagger);
-    // SwaggerModule.setup("swagger", app, document);
+    const document = SwaggerModule.createDocument(app, swagger);
+    SwaggerModule.setup("swagger", app, document);
     app.listen(port, () => console.log(`Server started from ${port}`));
   };
   start();

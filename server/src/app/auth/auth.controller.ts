@@ -23,7 +23,7 @@ import { SecurityService } from "../security/security.service";
 // ========================== decorators ====================
 import { User } from "../users/decorators/user.decorator";
 
-@ApiTags("Authentication")
+@ApiTags("Authentification")
 @Controller("auth")
 export class AuthController {
   constructor(

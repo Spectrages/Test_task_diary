@@ -24,7 +24,7 @@ import { UsersRepository } from "../users/repos/users.repository";
     TypeOrmModule.forFeature([UsersEntity]),
     PassportModule.register({ defaultStrategy: "jwt" }),
     JwtModule.register({
-      secret: "process.env.PRIVATE_KEY",
+      secret: process.env.PRIVATE_KEY,
       signOptions: { expiresIn: "3600s" },
     }),
   ],
