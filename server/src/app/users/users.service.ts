@@ -64,6 +64,7 @@ export class UsersService {
       );
 
     user.deeds.push(newDeed._id);
+    user.rating += 1;
     return await this.userRepository.updateUser(user);
   }
 
@@ -99,7 +100,6 @@ export class UsersService {
   }
 
   async removeFromFriendList(userTag: string, user: UserSessionDto) {
-    
     const friend = await this.userRepository.getUserByTag(userTag);
     if (!friend)
       throw new HttpException(
@@ -135,6 +135,7 @@ export class UsersService {
       (item) => item.toString() !== deedId.toString()
     );
     newUser.deeds = newDeeds;
+    newUser.rating -= 1;
     return await this.userRepository.updateUser(newUser);
   }
 

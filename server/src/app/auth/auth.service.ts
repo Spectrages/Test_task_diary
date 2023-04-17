@@ -56,6 +56,9 @@ export class AuthService {
     const userForDB: UserCreateDto = {
       email: dto.email,
       password: dto.password,
+      firstname: dto.firstname,
+      middlename: dto.middlename,
+      lastname: dto.lastname,
       tag: dto.tag,
       rating: 0,
       deeds: [],

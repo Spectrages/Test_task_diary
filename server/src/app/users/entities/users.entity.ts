@@ -28,6 +28,32 @@ export class UsersEntity extends UUIDEntity {
   password!: string;
 
   @ApiProperty({
+    example: "John",
+    description: "Firstname",
+    required: true,
+  })
+  @Column({ name: "firstname" })
+  firstname!: string;
+
+  @ApiProperty({
+    example: "Aaron",
+    description: "Middlename",
+    required: false,
+  })
+  @Index()
+  @Column({ name: "middlename" })
+  middlename?: string;
+
+  @ApiProperty({
+    example: "Bennett",
+    description: "Lastname",
+    required: true,
+  })
+  @Index()
+  @Column({ name: "lastname" })
+  lastname!: string;
+
+  @ApiProperty({
     example: "CoolMan",
     description: "Unique tag",
     required: true,

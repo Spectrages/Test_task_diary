@@ -1,10 +1,5 @@
 // ========================== validator ==================================
-import {
-  IsNotEmpty,
-  IsEmail,
-  IsString,
-  IsNumber,
-} from "class-validator";
+import { IsNotEmpty, IsEmail, IsString, IsNumber } from "class-validator";
 
 // ========================== entities & dto's ===========================
 import { UsersEntity } from "../entities/users.entity";
@@ -12,7 +7,6 @@ import { UUIDDto } from "../../../shared/dtos/uuid.dto";
 
 // ========================== swagger ====================================
 import { ApiProperty } from "@nestjs/swagger";
-import { SingleDeedDto } from "./deed.dto";
 import { ObjectID } from "typeorm";
 
 export class UserSessionDto extends UUIDDto {
@@ -23,6 +17,25 @@ export class UserSessionDto extends UUIDDto {
   @IsString()
   @IsEmail()
   email: string;
+
+  @ApiProperty({
+    description: "User firstname",
+  })
+  @IsNotEmpty()
+  @IsString()
+  firstname: string;
+
+  @ApiProperty({
+    description: "User middlename",
+  })
+  middlename: string;
+
+  @ApiProperty({
+    description: "User lastname",
+  })
+  @IsNotEmpty()
+  @IsString()
+  lastname: string;
 
   @ApiProperty({
     description: "User tag",
@@ -46,6 +59,9 @@ export class UserSessionDto extends UUIDDto {
     return {
       _id: entity._id,
       email: entity.email,
+      firstname: entity.firstname,
+      middlename: entity.middlename,
+      lastname: entity.lastname,
       tag: entity.tag,
       rating: entity.rating,
       deeds: entity.deeds,
@@ -63,6 +79,9 @@ export class UserSessionDto extends UUIDDto {
     const outputDto = new UserSessionDto();
     outputDto._id = dto._id;
     outputDto.email = dto.email;
+    outputDto.firstname = dto.firstname;
+    outputDto.middlename = dto.middlename;
+    outputDto.lastname = dto.lastname;
     outputDto.tag = dto.tag;
     outputDto.rating = dto.rating;
     outputDto.deeds = dto.deeds;

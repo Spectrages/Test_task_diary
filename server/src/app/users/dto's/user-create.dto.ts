@@ -32,6 +32,26 @@ export class UserCreateDto {
   password!: string;
 
   @ApiProperty({
+    description: "User firstname",
+  })
+  @IsNotEmpty()
+  @IsString()
+  firstname!: string;
+
+  @ApiProperty({
+    description: "User middlename",
+  })
+  @IsString()
+  middlename?: string;
+
+  @ApiProperty({
+    description: "User lastname",
+  })
+  @IsNotEmpty()
+  @IsString()
+  lastname!: string;
+
+  @ApiProperty({
     description: "User tag",
   })
   @IsNotEmpty()

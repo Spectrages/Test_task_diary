@@ -1,10 +1,5 @@
 // ========================== validator ==================================
-import {
-  IsNotEmpty,
-  IsEmail,
-  IsString,
-  IsNumber,
-} from "class-validator";
+import { IsNotEmpty, IsString, IsNumber } from "class-validator";
 
 // ========================== entities & dto's ===========================
 import { UsersEntity } from "../entities/users.entity";
@@ -28,10 +23,33 @@ export class UserByTagDto extends UUIDDto {
   @IsNumber()
   rating?: number;
 
+  @ApiProperty({
+    description: "User firstname",
+  })
+  @IsNotEmpty()
+  @IsString()
+  firstname!: string;
+
+  @ApiProperty({
+    description: "User middlename",
+  })
+  @IsString()
+  middlename?: string;
+
+  @ApiProperty({
+    description: "User lastname",
+  })
+  @IsNotEmpty()
+  @IsString()
+  lastname!: string;
+
   public static fromEntity(entity: UsersEntity) {
     return {
       _id: entity._id,
       tag: entity.tag,
+      firstname: entity.firstname,
+      middlename: entity.middlename,
+      lastname: entity.lastname,
       rating: entity.rating,
       created: entity.created.valueOf(),
       updated: entity.updated.valueOf(),

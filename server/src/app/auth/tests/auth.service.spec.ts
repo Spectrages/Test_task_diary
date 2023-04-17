@@ -104,20 +104,21 @@ describe("AuthService methods", () => {
 
   describe("As a user I would like to", () => {
     it("sign up with email and password", async () => {
-      mockUserRepository.getUserByEmail = jest
-        .fn()
-        .mockResolvedValue({
-          id: "123123123",
-          email: "test@gmail.com",
-          password: "password",
-          tag: "unique",
-          created: new Date(),
-          updated: new Date(),
-        });
+      mockUserRepository.getUserByEmail = jest.fn().mockResolvedValue({
+        id: "123123123",
+        email: "test@gmail.com",
+        password: "password",
+        tag: "unique",
+        created: new Date(),
+        updated: new Date(),
+      });
 
       const signUpToken = await authService.signUp({
         email: "test@gmail.com",
         password: "password",
+        firstname: "aaron",
+        middlename: "john",
+        lastname: "lastname",
         tag: "unique",
       });
 
@@ -145,6 +146,9 @@ describe("AuthService methods", () => {
       await authService.signUp({
         email: "test@gmail.com",
         password: "password",
+        firstname: "aaron",
+        middlename: "john",
+        lastname: "lastname",
         tag: "unique",
       });
     } catch (error) {
