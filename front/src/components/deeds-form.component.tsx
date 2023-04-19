@@ -7,18 +7,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Controller, useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 
-const DeedForm = ({ deeds }: { deeds: ISingleDeed[] }) => {
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm({
-    mode: "onChange",
-  });
-
+const DeedListForm = ({ deeds }: { deeds: ISingleDeed[] }) => {
+  const router = useRouter();
   const correctDate = (date: string) => {
     const newDate = new Date(date);
     return newDate.toLocaleString();
@@ -49,15 +41,12 @@ const DeedForm = ({ deeds }: { deeds: ISingleDeed[] }) => {
               sx={{
                 display: "flex",
                 flexDirection: "column",
+                margin: "8px",
               }}
             >
-              <Typography>name: {item.name}</Typography>
-              <Typography
-                variant="overline"
-                align="left"
-                sx={{ minWidth: 90, width: 120 }}
-              >
-                desc: {item.description}
+              <Typography>Name: {item.name}</Typography>
+              <Typography paragraph={true}>
+                Description: {item.description}
               </Typography>
               <Typography>Created: {correctDate(item.created)}</Typography>
               <Typography>Updated: {correctDate(item.updated)}</Typography>
@@ -73,7 +62,12 @@ const DeedForm = ({ deeds }: { deeds: ISingleDeed[] }) => {
               <Button
                 variant="contained"
                 color="success"
-                onClick={() => console.log("edit")}
+                onClick={() => {
+                  router.push({
+                    pathname: "/deeds/edit/[did]",
+                    query: { did: item._id },
+                  });
+                }}
               >
                 EDIT
               </Button>
@@ -96,4 +90,4 @@ const DeedForm = ({ deeds }: { deeds: ISingleDeed[] }) => {
   );
 };
 
-export default DeedForm;
+export default DeedListForm;

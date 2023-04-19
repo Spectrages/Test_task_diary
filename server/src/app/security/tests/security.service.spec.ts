@@ -75,7 +75,7 @@ describe("Security service", () => {
   it("should be return error", async () => {
     mockedUserRepository.getById = jest.fn().mockResolvedValue(false);
     try {
-      await securityService.getUser("id" as unknown as ObjectID);
+      await securityService.getUser("id");
     } catch (error) {
       expect(error).toBeInstanceOf(TypeError);
     }

@@ -3,12 +3,12 @@ import { HttpStatus, Injectable } from "@nestjs/common";
 
 // ========================== typeorm ===================================
 import { InjectRepository } from "@nestjs/typeorm";
-import { ObjectID, Repository } from "typeorm";
+import { Repository } from "typeorm";
+import { ObjectId } from "mongodb";
 
 // ========================== entities & dto's ==========================
 import { UsersEntity } from "../entities/users.entity";
 import { UserCreateDto } from "../dto's/user-create.dto";
-import { UserSessionDto } from "../dto's/user-session.dto";
 
 @Injectable()
 export class UsersRepository extends Repository<UsersEntity> {
@@ -23,9 +23,9 @@ export class UsersRepository extends Repository<UsersEntity> {
     );
   }
 
-  async getUserById(userId): Promise<UsersEntity> {
-    const _id = userId;
-    return await this.findOneByOrFail(_id);
+  async getUserById(userId: string): Promise<UsersEntity> {
+    const _id = new ObjectId(`${userId}`);
+    return await this.findOneOrFail({ where: { _id } });
   }
 
   async createUser(createUser: UserCreateDto): Promise<UsersEntity> {

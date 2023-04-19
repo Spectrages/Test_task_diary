@@ -1,10 +1,10 @@
 // ============================ typeorm =================================
 import { Column, ObjectIdColumn } from "typeorm";
-import { ObjectID } from "mongodb";
+import { ObjectId } from "mongodb";
 
 export abstract class UUIDEntity {
   @ObjectIdColumn()
-  _id!: ObjectID;
+  _id!: ObjectId;
 
   @Column({
     name: "created",

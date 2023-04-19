@@ -3,7 +3,9 @@ import { HttpStatus, Injectable } from "@nestjs/common";
 
 // ========================== typeorm ===================================
 import { InjectRepository } from "@nestjs/typeorm";
-import { ObjectID, Repository } from "typeorm";
+import { Repository } from "typeorm";
+
+import { ObjectId } from "mongodb";
 
 // ========================== entities & dto's ==========================
 import { CreateSingleDeedDto } from "../dto's/deed-create.dto";
@@ -22,9 +24,7 @@ export class SingleDeedRepository extends Repository<SingleDeedEntity> {
     );
   }
 
-  async createDeed(
-    deed: CreateSingleDeedDto
-  ): Promise<SingleDeedEntity> {
+  async createDeed(deed: CreateSingleDeedDto): Promise<SingleDeedEntity> {
     const newDeed = await this.create({
       created: new Date(),
       updated: new Date(),
@@ -35,19 +35,17 @@ export class SingleDeedRepository extends Repository<SingleDeedEntity> {
     return await this.save(newDeed);
   }
 
-  async deleteById(deedId: ObjectID): Promise<HttpStatus> {
+  async deleteById(deedId: string): Promise<HttpStatus> {
     await this.delete(deedId);
     return HttpStatus.OK;
   }
 
-  async getDeedById(deedId): Promise<SingleDeedEntity> {
-    const _id = deedId;
-    return await this.findOneOrFail(_id);
+  async getDeedById(deedId: string): Promise<SingleDeedEntity> {
+    const _id = new ObjectId(`${deedId}`);
+    return await this.findOneOrFail({ where: { _id } });
   }
 
-  async updateDeed(
-    deed: SingleDeedEntity
-  ): Promise<SingleDeedEntity> {
+  async updateDeed(deed: SingleDeedEntity): Promise<SingleDeedEntity> {
     return await this.save(deed);
   }
 

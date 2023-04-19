@@ -1,9 +1,5 @@
 // ========================== nest ==========================
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { I18nContext } from "nestjs-i18n";
 
 // ========================== bcrypt ==========================
@@ -33,30 +29,25 @@ export class AuthService {
 
   // ========================== signUp ==============================
   async signUp(dto: UserSignUpDto): Promise<TokenDto> {
-    const userFromDB = await this.usersRepository.getUserByEmail(
-      dto.email
-    );
-    const userFromDBTag = await this.usersRepository.getUserByTag(
-      dto.tag
-    );
+    const userFromDB = await this.usersRepository.getUserByEmail(dto.email);
+    const userFromDBTag = await this.usersRepository.getUserByTag(dto.tag);
     if (userFromDB)
       throw new HttpException(
-        `${I18nContext.current().t(
-          `errors.user.userAlreadyExist`
-        )}: ${dto.email}`,
+        `${I18nContext.current().t(`errors.user.userAlreadyExist`)}: ${
+          dto.email
+        }`,
         HttpStatus.BAD_REQUEST
       );
 
-      if (userFromDBTag)
+    if (userFromDBTag)
       throw new HttpException(
-        `${I18nContext.current().t(
-          `errors.user.userAlreadyExist`
-        )}: ${dto.tag}`,
+        `${I18nContext.current().t(`errors.user.userAlreadyExist`)}: ${
+          dto.tag
+        }`,
         HttpStatus.BAD_REQUEST
       );
 
-    if (userFromDB)
-      throw new HttpException("Error", HttpStatus.BAD_REQUEST);
+    if (userFromDB) throw new HttpException("Error", HttpStatus.BAD_REQUEST);
 
     // //! Line below could be activited on in case it neccessary to hash passwords
     // // const hashPassword = await hashSync(dto.password, 6);
@@ -75,17 +66,13 @@ export class AuthService {
 
     const newUser = await this.usersRepository.createUser(userForDB);
 
-    const access_token = await this.securityService.generateJwt(
-      newUser
-    );
+    const access_token = await this.securityService.generateJwt(newUser);
     return access_token;
   }
 
   // ========================== signIn ==============================
   async signIn(dto: UserSignInDto): Promise<TokenDto> {
-    const userFromDB = await this.usersRepository.getUserByEmail(
-      dto.email
-    );
+    const userFromDB = await this.usersRepository.getUserByEmail(dto.email);
 
     if (!userFromDB) {
       throw new HttpException(
@@ -103,9 +90,7 @@ export class AuthService {
         I18nContext.current().t("errors.authorization.unAuthorized"),
         HttpStatus.UNPROCESSABLE_ENTITY
       );
-    const access_token = await this.securityService.generateJwt(
-      userFromDB
-    );
+    const access_token = await this.securityService.generateJwt(userFromDB);
     return access_token;
   }
 }

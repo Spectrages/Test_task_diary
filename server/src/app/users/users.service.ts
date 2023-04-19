@@ -13,7 +13,6 @@ import { UsersEntity } from "./entities/users.entity";
 import { UserSessionDto } from "./dto's/user-session.dto";
 import { CreateSingleDeedDto } from "./dto's/deed-create.dto";
 import { SingleDeedDto } from "./dto's/deed.dto";
-import { ObjectID } from "typeorm";
 import { SingleDeedEntity } from "./entities/single-deed.entity";
 import { UserCreateDto } from "./dto's/user-create.dto";
 import { UserUpdateDto } from "./dto's/user-update.dto";
@@ -123,7 +122,7 @@ export class UsersService {
   }
 
   async deleteDeedById(
-    deedId: ObjectID,
+    deedId: string,
     user: UserSessionDto
   ): Promise<UsersEntity> {
     const result = await this.deedRepository.deleteById(deedId);
@@ -142,21 +141,10 @@ export class UsersService {
   }
 
   async updateDeedById(
-    deedId: ObjectID,
-    user: UserSessionDto,
+    deedId: string,
     info: SingleDeedDto
   ): Promise<SingleDeedEntity> {
     const currentDeed = await this.deedRepository.getDeedById(deedId);
-    const currentUser = await this.userRepository.getUserById(user._id);
-
-    const res = currentUser.deeds.map(
-      (item) => item.toString() === deedId.toString()
-    );
-    if (res.includes(false))
-      throw new HttpException(
-        `${I18nContext.current().t("errors.user.noAccess")}`,
-        HttpStatus.BAD_REQUEST
-      );
 
     if (!currentDeed)
       throw new HttpException(
@@ -229,7 +217,20 @@ export class UsersService {
     return await this.userRepository.updateUser(currentUser);
   }
 
-  async getProfile(user: UserSessionDto) {
+  async getProfile(user: UserSessionDto): Promise<UsersEntity> {
     return await this.userRepository.getUserById(user._id);
+  }
+
+  async getSingleDeedById(
+    user: UserSessionDto,
+    deedId: string
+  ): Promise<SingleDeedEntity> {
+    const currentUser = await this.userRepository.getUserById(user._id);
+    if (!currentUser)
+      throw new HttpException(
+        `${I18nContext.current().t("errors.user.userDoesNotExist")}`,
+        HttpStatus.NOT_FOUND
+      );
+    return await this.deedRepository.getDeedById(deedId);
   }
 }

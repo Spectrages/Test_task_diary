@@ -15,6 +15,18 @@ export const fetchGetUserDeeds = createAsyncThunk(
   }
 );
 
+export const fetchGetUserSingleDeed = createAsyncThunk(
+  "deeds/getUserSingleDeeds",
+  async (deedId: string, { rejectWithValue }) => {
+    try {
+      const response = await $api.get(`/users/deeds/${deedId}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data?.message as string);
+    }
+  }
+);
+
 export const fetchPostUserDeed = createAsyncThunk(
   "deeds/postUserDeed",
   async (data: IDeedDto, { rejectWithValue }) => {
@@ -31,7 +43,11 @@ export const fetchPutUserDeed = createAsyncThunk(
   "deeds/putUserDeed",
   async (data: IDeedUpdateDto, { rejectWithValue }) => {
     try {
-      const response = await $api.put(`/users/deeds/${data._id}`, data);
+      console.log(data);
+      const response = await $api.put(`/users/deeds/${data._id}`, {
+        name: data.name,
+        description: data.description,
+      });
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error?.response?.data?.message as string);

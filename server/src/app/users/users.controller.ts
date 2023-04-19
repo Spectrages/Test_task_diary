@@ -72,6 +72,24 @@ export class UsersController {
     return await this.usersService.getDeeds(user);
   }
 
+  //=============================== user can get single deed by id ================================================
+  @Get("/deeds/:deedId")
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "user can get single deed by id" })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "HttpStatus:200:OK",
+    type: UserSessionDto,
+    isArray: false,
+  })
+  @UsePipes(new ValidationPipe())
+  async getSingleDeedById(
+    @User() user: UserSessionDto,
+    @Param("deedId") deedId: string
+  ): Promise<SingleDeedEntity> {
+    return await this.usersService.getSingleDeedById(user, deedId);
+  }
+
   //=============================== user can get his profile ================================================
   @Get()
   @UseGuards(JwtAuthGuard)
@@ -137,11 +155,10 @@ export class UsersController {
   })
   @UsePipes(new ValidationPipe())
   async updateDeed(
-    @User() user: UserSessionDto,
-    @Param("deedId") deedId: ObjectID,
+    @Param("deedId") deedId: string,
     @Body() info: SingleDeedDto
   ): Promise<SingleDeedEntity> {
-    return await this.usersService.updateDeedById(deedId, user, info);
+    return await this.usersService.updateDeedById(deedId, info);
   }
 
   //=============================== user can update his profile =============================================
@@ -196,7 +213,7 @@ export class UsersController {
   @UsePipes(new ValidationPipe())
   async deleteDeed(
     @User() user: UserSessionDto,
-    @Param("deedId") deedId: ObjectID
+    @Param("deedId") deedId: string
   ): Promise<UserSessionDto> {
     const userFromDB = await this.usersService.deleteDeedById(deedId, user);
     return await UserSessionDto.fromEntity(userFromDB);

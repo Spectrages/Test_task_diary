@@ -1,9 +1,5 @@
 // ========================== nest ==========================
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { I18nContext } from "nestjs-i18n";
 
@@ -14,7 +10,6 @@ import { UsersRepository } from "../users/repos/users.repository";
 // ========================== dto ==========================
 import { UserSessionDto } from "../users/dto's/user-session.dto";
 import { TokenDto } from "./dtos/token.dto";
-import { ObjectID } from "typeorm";
 
 @Injectable()
 export class SecurityService {
@@ -29,7 +24,7 @@ export class SecurityService {
     return { token };
   }
 
-  async getUser(id: ObjectID): Promise<UsersEntity> {
+  async getUser(id: string): Promise<UsersEntity> {
     const user = await this.usersRepository.getUserById(id);
     if (!user) {
       throw new HttpException(

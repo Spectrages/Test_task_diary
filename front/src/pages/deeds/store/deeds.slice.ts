@@ -6,6 +6,7 @@ import { DeedsState } from "../types/deed-state.interface";
 import {
   fetchDeleteUserDeed,
   fetchGetUserDeeds,
+  fetchGetUserSingleDeed,
   fetchPostUserDeed,
   fetchPutUserDeed,
 } from "./deeds.actions";
@@ -31,6 +32,9 @@ const signInSlice = createSlice({
       state.errors.deeds = null;
       state.errors.singleDeed = null;
     },
+    clearSingleDeed: (state) => {
+      state.singleDeed = null;
+    },
   },
   extraReducers: (builder) => {
     //********************** GET ALL ************************/
@@ -48,6 +52,24 @@ const signInSlice = createSlice({
           state.pending.deeds = false;
           state.deeds = [];
           state.errors.deeds = action.payload;
+        }
+      );
+
+    //********************** GET ONE ************************/
+    builder
+      .addCase(fetchGetUserSingleDeed.pending, (state) => {
+        state.pending.singleDeed = false;
+      })
+      .addCase(fetchGetUserSingleDeed.fulfilled, (state, action) => {
+        state.pending.singleDeed = true;
+        state.singleDeed = action.payload;
+      })
+      .addCase(
+        fetchGetUserSingleDeed.rejected,
+        (state, action: any & { payload: any }) => {
+          state.pending.singleDeed = false;
+          state.singleDeed = null;
+          state.errors.singleDeed = action.payload;
         }
       );
 
@@ -110,5 +132,5 @@ const signInSlice = createSlice({
 });
 const { actions, reducer } = signInSlice;
 export default reducer;
-export const { clearErrors } = signInSlice.actions;
+export const { clearErrors, clearSingleDeed } = signInSlice.actions;
 export { fetchGetUserDeeds, fetchPostUserDeed as fetchPostUserDeeds };

@@ -277,9 +277,9 @@ describe("User service", () => {
         .fn()
         .mockResolvedValue(userWithDeeds);
 
-      expect(
-        await service.updateDeedById(singleDeed._id, userWithDeeds, singleDeed)
-      ).toEqual(singleDeed);
+      expect(await service.updateDeedById(singleDeed._id, singleDeed)).toEqual(
+        singleDeed
+      );
     });
 
     it("should be return error: deedDoesNotExist", async () => {
@@ -288,7 +288,7 @@ describe("User service", () => {
         .fn()
         .mockResolvedValue(userWithDeeds);
       try {
-        await service.updateDeedById(singleDeed._id, userWithDeeds, singleDeed);
+        await service.updateDeedById(singleDeed._id, singleDeed);
       } catch (error) {
         expect(error).toBeInstanceOf(HttpException);
       }

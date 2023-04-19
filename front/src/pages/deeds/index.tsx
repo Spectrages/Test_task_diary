@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGetUserDeeds } from "./store/deeds.actions";
 import { deedsSelector } from "./store/deeds.selector";
-import DeedForm from "@/components/deeds-form.component";
+import DeedListForm from "@/components/deeds-form.component";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`
@@ -30,7 +30,6 @@ const ContentGrid = styled(Grid)`
 `;
 
 const deeds = () => {
-  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const deeds = useSelector(deedsSelector);
 
@@ -42,7 +41,7 @@ const deeds = () => {
     <MainGrid>
       <PageNavBarComp />
       <ContentGrid sx={{ flexDirection: { xs: "column-reverse", md: "row" } }}>
-        <DeedForm deeds={deeds} />
+        <DeedListForm deeds={deeds} />;
       </ContentGrid>
       <PageFooterComp />
     </MainGrid>

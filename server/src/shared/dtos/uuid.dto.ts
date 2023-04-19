@@ -1,12 +1,12 @@
 // ========================== swagger ====================================
 import { ApiProperty } from "@nestjs/swagger";
-import { ObjectID } from "mongodb";
+import { ObjectId } from "mongodb";
 
 export abstract class UUIDDto {
   @ApiProperty({
     description: "Entry id",
   })
-  _id!: ObjectID;
+  _id!: ObjectId;
 
   @ApiProperty({
     description: "Date created",
