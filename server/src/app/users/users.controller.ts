@@ -30,13 +30,15 @@ import { User } from "./decorators/user.decorator";
 import { ObjectID } from "typeorm";
 import { SingleDeedDto } from "./dto's/deed.dto";
 import { SingleDeedEntity } from "./entities/single-deed.entity";
+import { UserCreateDto } from "./dto's/user-create.dto";
+import { UserUpdateDto } from "./dto's/user-update.dto";
 
 @ApiTags("Users controller")
 @Controller("users")
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // ! // BLOCK WITH GET REQUESTS
+  // *BLOCK WITH GET REQUESTS
   //=============================== user can get deeds his friend ========================================
   @Get("/:userTag/deeds")
   @UseGuards(JwtAuthGuard)
@@ -66,10 +68,24 @@ export class UsersController {
     isArray: false,
   })
   @UsePipes(new ValidationPipe())
-  async getDeeds(
-    @User() user: UserSessionDto
-  ): Promise<SingleDeedEntity[]> {
+  async getDeeds(@User() user: UserSessionDto): Promise<SingleDeedEntity[]> {
     return await this.usersService.getDeeds(user);
+  }
+
+  //=============================== user can get his profile ================================================
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "User can get his profile" })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "HttpStatus:200:OK",
+    type: UserSessionDto,
+    isArray: false,
+  })
+  @UsePipes(new ValidationPipe())
+  async getProfile(@User() user: UserSessionDto): Promise<UserSessionDto> {
+    const userFromDB = await this.usersService.getProfile(user);
+    return await UserSessionDto.fromEntity(userFromDB);
   }
 
   //=============================== user can get user by tag =============================================
@@ -83,16 +99,14 @@ export class UsersController {
     isArray: false,
   })
   @UsePipes(new ValidationPipe())
-  async getUserByTag(
-    @Param("userTag") userTag: string
-  ): Promise<UserByTagDto> {
+  async getUserByTag(@Param("userTag") userTag: string): Promise<UserByTagDto> {
     const userFromDB = await this.usersService.getUserByTag(userTag);
     return await UserByTagDto.fromEntity(userFromDB);
   }
 
-  // ! // BLOCK WITH POST REQUESTS
+  //  *BLOCK WITH POST REQUESTS
   //=============================== user can create new deed =============================================
-  @Post()
+  @Post("/deeds")
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Create new deed" })
   @ApiResponse({
@@ -106,14 +120,11 @@ export class UsersController {
     @Body() deed: CreateSingleDeedDto,
     @User() user: UserSessionDto
   ): Promise<UserSessionDto> {
-    const userWithDeedFromDB = await this.usersService.createDeed(
-      user,
-      deed
-    );
+    const userWithDeedFromDB = await this.usersService.createDeed(user, deed);
     return await UserSessionDto.fromEntity(userWithDeedFromDB);
   }
 
-  // ! // BLOCK WITH PUT REQUESTS
+  // *BLOCK WITH PUT REQUESTS
   //=============================== user can update his deed =============================================
   @Put("/deeds/:deedId")
   @UseGuards(JwtAuthGuard)
@@ -133,6 +144,25 @@ export class UsersController {
     return await this.usersService.updateDeedById(deedId, user, info);
   }
 
+  //=============================== user can update his profile =============================================
+  @Put()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Update profile" })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "HttpStatus:200:OK",
+    type: UserSessionDto,
+    isArray: false,
+  })
+  @UsePipes(new ValidationPipe())
+  async updateProfile(
+    @User() user: UserSessionDto,
+    @Body() info: UserUpdateDto
+  ): Promise<UserSessionDto> {
+    const userFromDB = await this.usersService.updateProfile(user, info);
+    return await UserSessionDto.fromEntity(userFromDB);
+  }
+
   //=============================== user can add user in friendList ======================================
   @Put("/:userTag")
   @UseGuards(JwtAuthGuard)
@@ -148,14 +178,11 @@ export class UsersController {
     @Param("userTag") userTag: string,
     @User() user: UserSessionDto
   ): Promise<UserSessionDto> {
-    const userFromDB = await this.usersService.addToFriendList(
-      user,
-      userTag
-    );
+    const userFromDB = await this.usersService.addToFriendList(user, userTag);
     return await UserSessionDto.fromEntity(userFromDB);
   }
 
-  // ! // BLOCK WITH DELETE REQUESTS
+  // *BLOCK WITH DELETE REQUESTS
   //=============================== user can delete his deed =============================================
   @Delete("/:deedId")
   @UseGuards(JwtAuthGuard)
@@ -171,10 +198,7 @@ export class UsersController {
     @User() user: UserSessionDto,
     @Param("deedId") deedId: ObjectID
   ): Promise<UserSessionDto> {
-    const userFromDB = await this.usersService.deleteDeedById(
-      deedId,
-      user
-    );
+    const userFromDB = await this.usersService.deleteDeedById(deedId, user);
     return await UserSessionDto.fromEntity(userFromDB);
   }
 
@@ -189,10 +213,8 @@ export class UsersController {
     isArray: false,
   })
   @UsePipes(new ValidationPipe())
-  async deleteUser(
-    @User() user: UserSessionDto
-  ): Promise<HttpStatus> {
-    return await this.usersService.deleteUser(user);
+  async deleteUser(@User() user: UserSessionDto): Promise<HttpStatus> {
+    return await this.usersService.deleteUser(user._id);
   }
 
   //=============================== user can delete his friend ===========================================

@@ -136,7 +136,9 @@ describe("User service", () => {
 
   describe("method: Delete user account", () => {
     it("should be return HTTPStatus OK", async () => {
-      expect(await service.deleteUser(userSessionDto)).toEqual(HttpStatus.OK);
+      expect(await service.deleteUser(userSessionDto._id)).toEqual(
+        HttpStatus.OK
+      );
     });
   });
 

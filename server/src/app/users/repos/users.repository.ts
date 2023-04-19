@@ -34,6 +34,9 @@ export class UsersRepository extends Repository<UsersEntity> {
       updated: new Date(),
       email: createUser.email,
       password: createUser.password,
+      firstname: createUser.firstname,
+      middlename: createUser.middlename,
+      lastname: createUser.lastname,
       rating: createUser.rating,
       tag: createUser.tag,
       deeds: createUser.deeds,
@@ -54,8 +57,16 @@ export class UsersRepository extends Repository<UsersEntity> {
     return await this.save(newData);
   }
 
-  async deleteUser(user: UserSessionDto): Promise<HttpStatus> {
-    await this.delete(user._id);
+  async deleteUser(userId: string): Promise<HttpStatus> {
+    await this.delete(userId);
     return HttpStatus.OK;
+  }
+
+  async getUsersArrayByEmail(email: string): Promise<UsersEntity[]> {
+    return await this.find({ where: { email: email } });
+  }
+
+  async getUsersArrayByTag(tag: string): Promise<UsersEntity[]> {
+    return await this.find({ where: { tag: tag } });
   }
 }

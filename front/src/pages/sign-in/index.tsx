@@ -1,19 +1,22 @@
 // ========================== react ============================
 import { FC } from "react";
+import { decodeToken } from "react-jwt";
 
 // ========================== mui ==============================
 import { Grid, styled } from "@mui/material";
 
 // ========================== components =======================
 import PageNavBarComp from "@/components/navbar.comp";
-import PageFooterComp from "@/components/page-footer.comp";
+import PageFooterComp from "@/components/page-footer.component";
 import SignInForm from "@/components/signIn-form.component";
+
+// ========================== redux ============================
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { signInErrorSelector } from "../../pages/sign-in/store/sign-in.selector";
 import { fetchSignIn } from "../../pages/sign-in/store/sign-in.slice";
 import { clearErrors } from "../../pages/sign-in/store/sign-in.slice";
-import { decodeToken } from "react-jwt";
+import { useRouter } from "next/router";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`
@@ -39,25 +42,21 @@ interface IFormInput {
   password: string;
 }
 
-export const handleResponse = (response: any) => {
-  if (response.payload) {
-    const user: any = decodeToken(response.payload);
-    console.log(user);
-  }
-};
-
 const signIn: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-
   const fecthErrors = useSelector(signInErrorSelector);
+
+  const router = useRouter();
 
   const handleSignIn = async (data: IFormInput) => {
     const newToken = await dispatch(fetchSignIn(data));
-    handleResponse(newToken);
+    window.localStorage.setItem("token", newToken.payload);
+    router.push(`/profile`);
   };
 
   const handleRedirectToSignUp = () => {
     dispatch(clearErrors());
+    router.push(`/sign-up`);
   };
 
   return (

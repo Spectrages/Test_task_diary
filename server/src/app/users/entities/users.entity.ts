@@ -23,7 +23,6 @@ export class UsersEntity extends UUIDEntity {
     description: "Password",
     required: true,
   })
-  @Index()
   @Column({ name: "password" })
   password!: string;
 
@@ -40,7 +39,6 @@ export class UsersEntity extends UUIDEntity {
     description: "Middlename",
     required: false,
   })
-  @Index()
   @Column({ name: "middlename" })
   middlename?: string;
 
@@ -49,7 +47,6 @@ export class UsersEntity extends UUIDEntity {
     description: "Lastname",
     required: true,
   })
-  @Index()
   @Column({ name: "lastname" })
   lastname!: string;
 

@@ -28,6 +28,7 @@ export class UserSessionDto extends UUIDDto {
   @ApiProperty({
     description: "User middlename",
   })
+  @IsString()
   middlename: string;
 
   @ApiProperty({

@@ -12,7 +12,6 @@ export const fetchSignIn = createAsyncThunk(
   async (data: ISignInTemplate, { rejectWithValue }) => {
     try {
       const response = await $api.post(`/auth/signIn`, data);
-      console.log(response)
       return response.data.token;
     } catch (error: any) {
       return rejectWithValue(error?.response?.data?.message as string);

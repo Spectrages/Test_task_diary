@@ -15,6 +15,8 @@ import { CreateSingleDeedDto } from "./dto's/deed-create.dto";
 import { SingleDeedDto } from "./dto's/deed.dto";
 import { ObjectID } from "typeorm";
 import { SingleDeedEntity } from "./entities/single-deed.entity";
+import { UserCreateDto } from "./dto's/user-create.dto";
+import { UserUpdateDto } from "./dto's/user-update.dto";
 
 @Injectable()
 export class UsersService {
@@ -116,8 +118,8 @@ export class UsersService {
     return await this.userRepository.updateUser(currentUser);
   }
 
-  async deleteUser(user: UserSessionDto): Promise<HttpStatus> {
-    return await this.userRepository.deleteUser(user);
+  async deleteUser(userId: string): Promise<HttpStatus> {
+    return await this.userRepository.deleteUser(userId);
   }
 
   async deleteDeedById(
@@ -179,5 +181,55 @@ export class UsersService {
     return deedsArray.filter(
       (item) => item._id.toString() !== deedIdArr.toString()
     );
+  }
+
+  async updateProfile(
+    user: UserSessionDto,
+    info: UserUpdateDto
+  ): Promise<UsersEntity> {
+    const currentUser = await this.userRepository.getUserById(user._id);
+    if (!currentUser)
+      throw new HttpException(
+        `${I18nContext.current().t("errors.user.userDoesNotExist")}`,
+        HttpStatus.NOT_FOUND
+      );
+    const usersByEmail = info.email
+      ? await this.userRepository.getUsersArrayByEmail(info.email)
+      : null;
+    const usersByTag = info.tag
+      ? await this.userRepository.getUsersArrayByTag(info.tag)
+      : null;
+
+    if (
+      usersByEmail?.length &&
+      (usersByEmail.length > 1 ||
+        usersByEmail[0]?._id.toString() !== user._id.toString())
+    )
+      throw new HttpException(
+        `${I18nContext.current().t(`errors.user.userAlreadyExist`)}: ${
+          info.email
+        }`,
+        HttpStatus.BAD_REQUEST
+      );
+
+    if (
+      usersByTag?.length &&
+      (usersByTag.length > 1 ||
+        usersByTag[0]?._id.toString() !== user._id.toString())
+    )
+      throw new HttpException(
+        `${I18nContext.current().t(`errors.user.userAlreadyExist`)}: ${
+          info.tag
+        }`,
+        HttpStatus.BAD_REQUEST
+      );
+
+    currentUser.updated = new Date();
+    Object.assign(currentUser, info);
+    return await this.userRepository.updateUser(currentUser);
+  }
+
+  async getProfile(user: UserSessionDto) {
+    return await this.userRepository.getUserById(user._id);
   }
 }

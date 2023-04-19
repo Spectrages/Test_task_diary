@@ -1,11 +1,11 @@
 export enum LinksEnums {
-  friends = "Friends",
+  profile = "Profile",
   deeds = "Deeds",
-  account = "Account",
+  friends = "Friends",
 }
 
 export interface ILinks {
   friends: LinksEnums.friends;
   deeds: LinksEnums.deeds;
-  account: LinksEnums.account;
+  profile: LinksEnums.profile;
 }

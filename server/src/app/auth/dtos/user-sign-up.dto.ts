@@ -30,20 +30,20 @@ export class UserSignUpDto {
   })
   @IsNotEmpty()
   @IsString()
-  firstname!: string;
+  readonly firstname!: string;
 
   @ApiProperty({
     description: "User middlename",
   })
   @IsString()
-  middlename?: string;
+  readonly middlename?: string;
 
   @ApiProperty({
     description: "User lastname",
   })
   @IsNotEmpty()
   @IsString()
-  lastname!: string;
+  readonly lastname!: string;
 
   @ApiProperty({
     example: "CoolMan",

@@ -1,5 +1,5 @@
 // ========================== react ==========================
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useTranslation } from "react-i18next";
@@ -39,6 +39,8 @@ import { AppDispatch } from "../redux/store";
 // ========================== components ==========================
 import SearchComponent from "./search.component";
 import { LinksEnums } from "@/shared/links.enum";
+import { useRouter } from "next/router";
+import { startCase } from "lodash";
 
 // ========================== initial settings ==========================
 const drawerWidth = 200;
@@ -84,16 +86,16 @@ const PageNavBarComp = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-
-  // ===== i18n =====
+  const [isAuth, setIsAuth] = useState(false);
+  const router = useRouter();
 
   // ===== auth check =====
-  //const token = window.localStorage.getItem("token");
-  const token = "2423422424234234";
-  let isAuth = true;
-  // if (token) {
-  //   isAuth = true;
-  // }
+  useEffect(() => {
+    const token = window.localStorage.getItem("token");
+    if (token) {
+      setIsAuth(true);
+    }
+  }, [dispatch]);
 
   // ===== handlers =====
   const handleDrawerOpen = () => {
@@ -113,14 +115,13 @@ const PageNavBarComp = () => {
       case SettingsEnum.logout:
         dispatch(logout());
         window.localStorage.removeItem("token");
+        router.push('/sign-in')
         break;
       default:
         break;
     }
     setAnchorElUser(null);
   };
-
-  const enumSettings = Object.values(SettingsEnum).slice(0, 3);
 
   return (
     <Box component={"nav"} sx={{ display: "flex" }}>
@@ -211,23 +212,21 @@ const PageNavBarComp = () => {
                     onClose={handleCloseUserMenu}
                     data-testid="hidden-menu-test"
                   >
-                    {enumSettings.map((item) => (
-                      <MenuItem
-                        value={item}
-                        key={item}
-                        onClick={() => handleCloseUserMenu(item)}
-                        data-testid={`hidden-menu-${item}`}
-                      >
-                        <Typography textAlign="center">{item}</Typography>
-                      </MenuItem>
-                    ))}
+                    <MenuItem
+                      value={SettingsEnum.logout}
+                      onClick={() => handleCloseUserMenu(SettingsEnum.logout)}
+                    >
+                      <Typography textAlign="center">
+                        {SettingsEnum.logout}
+                      </Typography>
+                    </MenuItem>
                   </Menu>
                 </>
               ) : (
                 <Button
                   variant="contained"
                   color="success"
-                  onClick={() => console.log("/auth/signIn")}
+                  onClick={() => router.push("/sign-in")}
                   data-testid="sign-in-btn-test"
                 >
                   Sign In
@@ -275,10 +274,14 @@ const PageNavBarComp = () => {
               />
             </ListItemButton>
           </ListItem>
-          {Object.values(LinksEnums).map((item, index) => (
+          {Object.keys(LinksEnums).map((item, index) => (
             <ListItem disablePadding key={index}>
               <ListItemButton>
-                <ListItemText primary={`> ${item}`} sx={{ ml: 3 }} />
+                <ListItemText
+                  primary={`> ${startCase(item)}`}
+                  sx={{ ml: 3 }}
+                  onClick={() => router.push(`/${item}`)}
+                />
               </ListItemButton>
             </ListItem>
           ))}

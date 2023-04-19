@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import { Box, Paper, Typography } from "@mui/material";
 
 // ========================== components ======================
-// import TemporaryTypography from "./temporary-typography.component";
+import TemporaryTypography from "./temporary-typography.component";
 
 interface IFormInput {
   email: string;
@@ -119,7 +119,7 @@ const SignInForm = ({
               width: "100%",
             }}
           >
-            {/* {fecthErrors !== undefined && (
+            {fecthErrors !== undefined && (
               <TemporaryTypography
                 variant="overline"
                 align="center"
@@ -129,7 +129,7 @@ const SignInForm = ({
               >
                 {fecthErrors}
               </TemporaryTypography>
-            )} */}
+            )}
             <Button
               type="submit"
               disabled={!isValid}

@@ -16,7 +16,7 @@ const $serviceApi = axios.create({
 });
 
 // ===== set token =====
-$serviceApi.interceptors.request.use(
+$api.interceptors.request.use(
   async (config) => {
     config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
     return config;
@@ -63,7 +63,7 @@ $api.interceptors.response.use(
   async (response) => response,
   (error) => {
     if (error.response.status === 401) {
-      window.location.replace("/auth/signIn");
+      window.location.replace("/sign-in");
     }
     return Promise.reject(error);
   }
