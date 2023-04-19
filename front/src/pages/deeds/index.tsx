@@ -2,13 +2,14 @@ import PageNavBarComp from "@/components/navbar.comp";
 import PageFooterComp from "@/components/page-footer.component";
 import { AppDispatch } from "@/redux/store";
 import styled from "@emotion/styled";
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGetUserDeeds } from "./store/deeds.actions";
+import { fetchDeleteUserDeed, fetchGetUserDeeds } from "./store/deeds.actions";
 import { deedsSelector } from "./store/deeds.selector";
 import DeedListForm from "@/components/deeds-form.component";
+import { clearErrors, clearSingleDeed } from "./store/deeds.slice";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`
@@ -31,17 +32,46 @@ const ContentGrid = styled(Grid)`
 
 const deeds = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [isFriend, setIsFriend] = useState(false);
   const deeds = useSelector(deedsSelector);
+  const router = useRouter();
+
+  const handleEdit = (deedId: string) => {
+    dispatch(clearSingleDeed());
+    router.push({
+      pathname: "/deeds/edit/[did]",
+      query: { did: deedId },
+    });
+  };
+
+  const handleDelete = (deedId: string) => {
+    dispatch(fetchDeleteUserDeed(deedId));
+    dispatch(clearErrors());
+  };
 
   useEffect(() => {
     dispatch(fetchGetUserDeeds());
-  }, []);
+  }, [handleDelete]);
 
   return (
     <MainGrid>
+      <Button
+        variant="contained"
+        color="success"
+        sx={{ width: "90%", margin: "16px" }}
+        onClick={() => router.push("/deeds/create")}
+      >
+        Create new deed
+      </Button>
       <PageNavBarComp />
       <ContentGrid sx={{ flexDirection: { xs: "column-reverse", md: "row" } }}>
-        <DeedListForm deeds={deeds} />;
+        <DeedListForm
+          isFriend={isFriend}
+          deeds={deeds}
+          handleDelete={handleDelete}
+          handleEdit={handleEdit}
+        />
+        ;
       </ContentGrid>
       <PageFooterComp />
     </MainGrid>

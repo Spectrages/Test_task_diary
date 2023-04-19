@@ -1,4 +1,4 @@
-export interface IDeedDto {
+export interface ISingleDeedCreate {
     name: string;
     description: string;
 }

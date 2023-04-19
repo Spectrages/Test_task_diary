@@ -133,4 +133,4 @@ const signInSlice = createSlice({
 const { actions, reducer } = signInSlice;
 export default reducer;
 export const { clearErrors, clearSingleDeed } = signInSlice.actions;
-export { fetchGetUserDeeds, fetchPostUserDeed as fetchPostUserDeeds };
+export { fetchGetUserDeeds, fetchPostUserDeed };

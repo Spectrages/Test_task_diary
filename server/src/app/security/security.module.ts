@@ -25,7 +25,7 @@ import { UsersRepository } from "../users/repos/users.repository";
     PassportModule.register({ defaultStrategy: "jwt" }),
     JwtModule.register({
       secret: process.env.PRIVATE_KEY,
-      signOptions: { expiresIn: "3600s" },
+      signOptions: { expiresIn: "360000s" },
     }),
   ],
   controllers: [],

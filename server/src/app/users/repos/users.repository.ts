@@ -23,8 +23,13 @@ export class UsersRepository extends Repository<UsersEntity> {
     );
   }
 
+  async getAll(): Promise<UsersEntity[]> {
+    return await this.find();
+  }
+
   async getUserById(userId: string): Promise<UsersEntity> {
-    const _id = new ObjectId(`${userId}`);
+
+    const _id = new ObjectId(userId);
     return await this.findOneOrFail({ where: { _id } });
   }
 

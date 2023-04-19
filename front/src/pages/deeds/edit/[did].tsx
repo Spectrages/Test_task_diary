@@ -61,6 +61,7 @@ const SingleDeedEditPage = () => {
   };
 
   const handleSave = (data: ISingleDeed) => {
+    setIsClicked(true);
     dispatch(fetchPutUserDeed(data));
     dispatch(clearErrors());
   };

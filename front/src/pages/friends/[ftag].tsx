@@ -4,18 +4,13 @@ import { AppDispatch } from "@/redux/store";
 import styled from "@emotion/styled";
 import { Button, Grid } from "@mui/material";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchDeleteUserDeed,
-  fetchGetUserDeeds,
-  fetchPostUserDeed,
-} from "./store/deeds.actions";
-import { deedsSelector, singleDeedErrorSelector } from "./store/deeds.selector";
 import DeedListForm from "@/components/deeds-form.component";
-import { clearErrors, clearSingleDeed } from "./store/deeds.slice";
-import DeedCreateForm from "@/components/deed-create-form.component";
-import { ISingleDeedCreate } from "./types/deed-create.interface";
+import {
+  friendDeedsSelector,
+  singleFriendSelector,
+} from "./store/friends.selectors";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`
@@ -36,33 +31,19 @@ const ContentGrid = styled(Grid)`
   min-height: 100%;
 `;
 
-const CreateDeed = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const fetchingErrors = useSelector(singleDeedErrorSelector);
-  const router = useRouter();
-
-  const handleSave = (data: ISingleDeedCreate) => {
-    dispatch(fetchPostUserDeed(data));
-    router.push(`/deeds`);
-  };
-
-  const handleBack = () => {
-    router.push(`/deeds`);
-  };
+const FriendDeedsPage = () => {
+  const [isFriend, setIsFriend] = useState(true);
+  const deeds = useSelector(friendDeedsSelector);
 
   return (
     <MainGrid>
       <PageNavBarComp />
       <ContentGrid sx={{ flexDirection: { xs: "column-reverse", md: "row" } }}>
-        <DeedCreateForm
-          handleSave={handleSave}
-          handleBack={handleBack}
-          fetchingErrors={fetchingErrors}
-        />
+        <DeedListForm isFriend={isFriend} deeds={deeds} />;
       </ContentGrid>
       <PageFooterComp />
     </MainGrid>
   );
 };
 
-export default CreateDeed;
+export default FriendDeedsPage;

@@ -63,7 +63,6 @@ const profile: FC = () => {
   const fetchingErrors = useSelector(profileErrorsSelector);
 
   const handleBack = () => {
-    setIsClicked(true);
     dispatch(clearErrors());
     router.push(`/deeds`);
   };

@@ -1,16 +1,17 @@
 import { ISingleDeed } from "@/pages/deeds/types/deed-single.interface";
-import {
-  Box,
-  Button,
-  FormControl,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { useRouter } from "next/router";
+import { Box, Button, Paper, Typography } from "@mui/material";
 
-const DeedListForm = ({ deeds }: { deeds: ISingleDeed[] }) => {
-  const router = useRouter();
+const DeedListForm = ({
+  deeds,
+  isFriend,
+  handleDelete,
+  handleEdit,
+}: {
+  deeds: ISingleDeed[];
+  isFriend: boolean;
+  handleDelete?: (s: string) => void;
+  handleEdit?: (s: string) => void;
+}) => {
   const correctDate = (date: string) => {
     const newDate = new Date(date);
     return newDate.toLocaleString();
@@ -52,37 +53,34 @@ const DeedListForm = ({ deeds }: { deeds: ISingleDeed[] }) => {
               <Typography>Updated: {correctDate(item.updated)}</Typography>
             </Box>
 
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "16px",
-              }}
-            >
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => {
-                  router.push({
-                    pathname: "/deeds/edit/[did]",
-                    query: { did: item._id },
-                  });
-                }}
-              >
-                EDIT
-              </Button>
-
-              <Button
-                variant="contained"
-                color="error"
+            {!isFriend && (
+              <Box
                 sx={{
-                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "16px",
                 }}
-                onClick={() => console.log("delete")}
               >
-                DELETE
-              </Button>
-            </Box>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => handleEdit && handleEdit(item._id)}
+                >
+                  EDIT
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="error"
+                  sx={{
+                    width: "100%",
+                  }}
+                  onClick={() => handleDelete && handleDelete(item._id)}
+                >
+                  DELETE
+                </Button>
+              </Box>
+            )}
           </Paper>
         );
       })}

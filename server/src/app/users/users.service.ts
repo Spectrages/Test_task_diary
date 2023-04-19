@@ -14,7 +14,6 @@ import { UserSessionDto } from "./dto's/user-session.dto";
 import { CreateSingleDeedDto } from "./dto's/deed-create.dto";
 import { SingleDeedDto } from "./dto's/deed.dto";
 import { SingleDeedEntity } from "./entities/single-deed.entity";
-import { UserCreateDto } from "./dto's/user-create.dto";
 import { UserUpdateDto } from "./dto's/user-update.dto";
 
 @Injectable()
@@ -23,6 +22,10 @@ export class UsersService {
     private readonly userRepository: UsersRepository,
     private readonly deedRepository: SingleDeedRepository
   ) {}
+
+  async getAllUsers(): Promise<UsersEntity[]> {
+    return await this.userRepository.getAll();
+  }
 
   async getUserByTag(userTag: string): Promise<UsersEntity> {
     return await this.userRepository.getUserByTag(userTag);
@@ -93,11 +96,8 @@ export class UsersService {
       );
 
     const deedsArray = await this.deedRepository.getAllDeed();
-    const deedIdArr = user.deeds.map((item) => item);
-
-    return deedsArray.filter(
-      (item) => item._id.toString() !== deedIdArr.toString()
-    );
+    const deedIdArr = user.deeds.map((item) => item.toString());
+    return deedsArray.filter((item) => deedIdArr.includes(item._id.toString()));
   }
 
   async removeFromFriendList(userTag: string, user: UserSessionDto) {
@@ -153,6 +153,7 @@ export class UsersService {
       );
 
     Object.assign(currentDeed, info);
+    currentDeed.updated = new Date();
     return await this.deedRepository.updateDeed(currentDeed);
   }
 
@@ -164,11 +165,10 @@ export class UsersService {
         HttpStatus.NOT_FOUND
       );
 
-    const deedIdArr = currentUser.deeds.map((item) => item);
+    const deedIdArr = currentUser.deeds.map((item) => item.toString());
     const deedsArray = await this.deedRepository.getAllDeed();
-    return deedsArray.filter(
-      (item) => item._id.toString() !== deedIdArr.toString()
-    );
+
+    return deedsArray.filter((item) => deedIdArr.includes(item._id.toString()));
   }
 
   async updateProfile(
@@ -232,5 +232,20 @@ export class UsersService {
         HttpStatus.NOT_FOUND
       );
     return await this.deedRepository.getDeedById(deedId);
+  }
+
+  async getFriends(user: UserSessionDto) {
+    const currentUser = await this.userRepository.getUserById(user._id);
+    if (!currentUser)
+      throw new HttpException(
+        `${I18nContext.current().t("errors.user.userDoesNotExist")}`,
+        HttpStatus.NOT_FOUND
+      );
+
+    const friendsTags = currentUser.friends.map((item) => item.toString());
+    const usersList = await this.userRepository.getAll();
+    return usersList.filter((item) =>
+      friendsTags.includes(item.tag.toString())
+    );
   }
 }

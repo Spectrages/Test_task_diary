@@ -1,6 +1,6 @@
 import $api from "@/api/api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { IDeedDto } from "../types/deed-create.interface";
+import { ISingleDeedCreate } from "../types/deed-create.interface";
 import { IDeedUpdateDto } from "../types/deed-update.interface";
 
 export const fetchGetUserDeeds = createAsyncThunk(
@@ -29,7 +29,7 @@ export const fetchGetUserSingleDeed = createAsyncThunk(
 
 export const fetchPostUserDeed = createAsyncThunk(
   "deeds/postUserDeed",
-  async (data: IDeedDto, { rejectWithValue }) => {
+  async (data: ISingleDeedCreate, { rejectWithValue }) => {
     try {
       const response = await $api.post(`/users/deeds`, data);
       return response.data;

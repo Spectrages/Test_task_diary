@@ -5,7 +5,7 @@ export interface UserSessionDto extends UUIDDto {
   firstname: string;
   middlename: string;
   lastname: string;
-  tag?: string;
+  tag: string;
   rating?: number;
   deeds: [];
   friends: [];

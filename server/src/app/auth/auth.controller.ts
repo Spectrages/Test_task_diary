@@ -56,9 +56,7 @@ export class AuthController {
   }
 
   @Get("/refresh-token")
-  async refreshToken(
-    @User() currentUser: UserSessionDto
-  ): Promise<TokenDto> {
+  async refreshToken(@User() currentUser: UserSessionDto): Promise<TokenDto> {
     const user = await this.securityService.getUser(currentUser._id);
     return await this.securityService.generateJwt(user);
   }

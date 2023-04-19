@@ -40,7 +40,7 @@ export class UsersController {
 
   // *BLOCK WITH GET REQUESTS
   //=============================== user can get deeds his friend ========================================
-  @Get("/:userTag/deeds")
+  @Get("/friends/deeds/:userTag")
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Get a friend's deeds" })
   @ApiResponse({
@@ -55,6 +55,22 @@ export class UsersController {
     @User() user: UserSessionDto
   ): Promise<SingleDeedEntity[]> {
     return await this.usersService.getDeedsByTag(userTag, user);
+  }
+
+  //=============================== user can get his friend-list ================================================
+  @Get("/friends")
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "user can get his friend-list" })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "HttpStatus:200:OK",
+    type: UserSessionDto,
+    isArray: false,
+  })
+  @UsePipes(new ValidationPipe())
+  async getFriends(@User() user: UserSessionDto): Promise<UserSessionDto[]> {
+    const usersFromDB = await this.usersService.getFriends(user);
+    return usersFromDB.map((item) => UserSessionDto.fromEntity(item));
   }
 
   //=============================== user can get his deeds ================================================
@@ -122,6 +138,22 @@ export class UsersController {
     return await UserByTagDto.fromEntity(userFromDB);
   }
 
+  //=============================== get all =============================================
+  @Get("/all")
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Get all users" })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "HttpStatus:200:OK",
+    type: UserByTagDto,
+    isArray: false,
+  })
+  @UsePipes(new ValidationPipe())
+  async getAllUsers(): Promise<UserSessionDto[]> {
+    const usersFromDB = await this.usersService.getAllUsers();
+    return usersFromDB.map((user) => UserSessionDto.fromEntity(user));
+  }
+
   //  *BLOCK WITH POST REQUESTS
   //=============================== user can create new deed =============================================
   @Post("/deeds")
@@ -181,7 +213,7 @@ export class UsersController {
   }
 
   //=============================== user can add user in friendList ======================================
-  @Put("/:userTag")
+  @Put("/friends/:userTag")
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Add user in friend list" })
   @ApiResponse({
@@ -199,9 +231,31 @@ export class UsersController {
     return await UserSessionDto.fromEntity(userFromDB);
   }
 
+  //=============================== user can remove his friend ===========================================
+  @Put("/friends/remove/:userTag")
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Remove friend" })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "HttpStatus:200:OK",
+    type: UserSessionDto,
+    isArray: false,
+  })
+  @UsePipes(new ValidationPipe())
+  async removeFromFriendList(
+    @User() user: UserSessionDto,
+    @Param("userTag") userTag: string
+  ): Promise<UserSessionDto> {
+    const userFromDB = await this.usersService.removeFromFriendList(
+      userTag,
+      user
+    );
+    return await UserSessionDto.fromEntity(userFromDB);
+  }
+
   // *BLOCK WITH DELETE REQUESTS
   //=============================== user can delete his deed =============================================
-  @Delete("/:deedId")
+  @Delete("/deeds/:deedId")
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Delete deed" })
   @ApiResponse({
@@ -232,27 +286,5 @@ export class UsersController {
   @UsePipes(new ValidationPipe())
   async deleteUser(@User() user: UserSessionDto): Promise<HttpStatus> {
     return await this.usersService.deleteUser(user._id);
-  }
-
-  //=============================== user can delete his friend ===========================================
-  @Delete("/:userTag")
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: "Delete friend" })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: "HttpStatus:200:OK",
-    type: UserSessionDto,
-    isArray: false,
-  })
-  @UsePipes(new ValidationPipe())
-  async removeFromFriendList(
-    @User() user: UserSessionDto,
-    @Param("userTag") userTag: string
-  ): Promise<UserSessionDto> {
-    const userFromDB = await this.usersService.removeFromFriendList(
-      userTag,
-      user
-    );
-    return await UserSessionDto.fromEntity(userFromDB);
   }
 }
