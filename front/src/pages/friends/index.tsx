@@ -5,13 +5,13 @@ import { AppDispatch } from "@/redux/store";
 import styled from "@emotion/styled";
 import { Grid, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { friendsSelector } from "./store/friends.selectors";
-import { useEffect, useState } from "react";
+import { friendsSelector } from "../../redux/friends/store/friends.selectors";
+import { useEffect } from "react";
 import {
   fetchFriendDeeds,
   fetchGetUserFriends,
   fetchRemoveUserFriend,
-} from "./store/friends.slice";
+} from "../../redux/friends/store/friends.slice";
 import { useRouter } from "next/router";
 
 // ========================== styles ===========================

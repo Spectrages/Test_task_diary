@@ -13,8 +13,7 @@ import { Box, FormControl, Paper, Typography } from "@mui/material";
 // =========================== component ======================================
 import TemporaryTypography from "./temporary-typography.component";
 import { formSchema } from "./deed-create.const";
-import { ISingleDeed } from "@/pages/deeds/types/deed-single.interface";
-import { ISingleDeedCreate } from "@/pages/deeds/types/deed-create.interface";
+import { ISingleDeedCreate } from "@/types/deeds/deed-create.interface";
 
 const DeedCreateForm = ({
   fetchingErrors,

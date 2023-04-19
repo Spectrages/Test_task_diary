@@ -10,7 +10,7 @@ import DeedListForm from "@/components/deeds-form.component";
 import {
   friendDeedsSelector,
   singleFriendSelector,
-} from "./store/friends.selectors";
+} from "../../redux/friends/store/friends.selectors";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`

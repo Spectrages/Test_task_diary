@@ -2,11 +2,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 
 // =========================== Slices ===========================
-import signUp from "../pages/sign-up/store/sign-up.slice";
-import signIn from "../pages/sign-in/store/sign-in.slice";
-import profile from "../pages/profile/store/profile.slice";
-import deeds from "../pages/deeds/store/deeds.slice";
-import friends from "../pages/friends/store/friends.slice";
+import signUp from "./sign-up/store/sign-up.slice";
+import signIn from "./sign-in/store/sign-in.slice";
+import profile from "./profile/store/profile.slice";
+import deeds from "./deeds/store/deeds.slice";
+import friends from "./friends/store/friends.slice";
 
 const store = configureStore({
   reducer: {

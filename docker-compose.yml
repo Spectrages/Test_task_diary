@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+  front:
+    depends_on:
+      - server
+    build:
+      context: ./front
+    image: front:latest
+    ports:
+      - 8000:3000
+    networks:
+      main2:
+    hostname: "front.local"
+    container_name: "front"
+    command: "npm start"
+
+  server:
+    depends_on:
+      - db
+    build:
+      context: ./server
+    image: server:latest
+    ports:
+      - 5000:5000
+    networks:
+      main2:
+    hostname: "server.local"
+    container_name: "server_diary_task"
+    command: "npm run start:dev"
+
+  db:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: null
+      MONGO_INITDB_ROOT_PASSWORD: null
+    ports:
+      - 27017:27017
+    networks:
+      main2:
+    hostname: "db_mongo.local"
+    container_name: "db_mongo"
+
+networks:
+  main2:

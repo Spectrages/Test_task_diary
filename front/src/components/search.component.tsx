@@ -1,7 +1,6 @@
 // =========================== mui ===========================
 import { styled } from "@mui/material/styles";
-import SearchIcon from "@mui/icons-material/Search";
-import { alpha, Autocomplete, Box, InputBase, TextField } from "@mui/material";
+import { alpha, Autocomplete, Box, TextField } from "@mui/material";
 
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -12,9 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   friendsSelector,
   usersSelector,
-} from "@/pages/friends/store/friends.selectors";
+} from "@/redux/friends/store/friends.selectors";
 import { useRouter } from "next/router";
-import { fetchAddUserFriend } from "@/pages/friends/store/friends.actions";
+import { fetchAddUserFriend } from "@/redux/friends/store/friends.actions";
 
 // =========================== styled ===========================
 const Search = styled("div")(({ theme }) => ({

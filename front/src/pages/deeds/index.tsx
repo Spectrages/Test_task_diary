@@ -6,10 +6,10 @@ import { Button, Grid } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDeleteUserDeed, fetchGetUserDeeds } from "./store/deeds.actions";
-import { deedsSelector } from "./store/deeds.selector";
+import { fetchDeleteUserDeed, fetchGetUserDeeds } from "../../redux/deeds/store/deeds.actions";
+import { deedsSelector } from "../../redux/deeds/store/deeds.selector";
 import DeedListForm from "@/components/deeds-form.component";
-import { clearErrors, clearSingleDeed } from "./store/deeds.slice";
+import { clearErrors, clearSingleDeed } from "../../redux/deeds/store/deeds.slice";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`
@@ -47,7 +47,7 @@ const deeds = () => {
   const handleDelete = (deedId: string) => {
     dispatch(fetchDeleteUserDeed(deedId));
     dispatch(clearErrors());
-    dispatch(fetchGetUserDeeds());  
+    dispatch(fetchGetUserDeeds());
   };
 
   useEffect(() => {
@@ -72,7 +72,6 @@ const deeds = () => {
           handleDelete={handleDelete}
           handleEdit={handleEdit}
         />
-        ;
       </ContentGrid>
       <PageFooterComp />
     </MainGrid>

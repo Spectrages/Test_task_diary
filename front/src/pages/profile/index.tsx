@@ -13,17 +13,17 @@ import SignInForm from "@/components/signIn-form.component";
 // ========================== redux ============================
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { signInErrorSelector } from "../../pages/sign-in/store/sign-in.selector";
-import { fetchSignIn } from "../../pages/sign-in/store/sign-in.slice";
-import { clearErrors, fetchDeleteUserAccount } from "./store/profile.slice";
+import { signInErrorSelector } from "../../redux/sign-in/store/sign-in.selector";
+import { fetchSignIn } from "../../redux/sign-in/store/sign-in.slice";
+import { clearErrors, fetchDeleteUserAccount } from "../../redux/profile/store/profile.slice";
 import { useRouter } from "next/router";
 import ProfileForm from "@/components/profile-form.component";
 import {
   profileErrorsSelector,
   profileInfoSelector,
   profileLoadingSelector,
-} from "./store/profile.selector";
-import { fetchGetUserInfo, fetchUpdateUserInfo } from "./store/profile.slice";
+} from "../../redux/profile/store/profile.selector";
+import { fetchGetUserInfo, fetchUpdateUserInfo } from "../../redux/profile/store/profile.slice";
 import { current } from "@reduxjs/toolkit";
 
 // ========================== styles ===========================

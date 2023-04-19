@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "set PORT=8000 && next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -49,5 +49,5 @@
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
-  "proxy": "https://localhost:5000"
+  "proxy": "https://server:5000"
 }

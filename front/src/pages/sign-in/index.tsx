@@ -1,5 +1,5 @@
 // ========================== react ============================
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { decodeToken } from "react-jwt";
 
 // ========================== mui ==============================
@@ -13,9 +13,9 @@ import SignInForm from "@/components/signIn-form.component";
 // ========================== redux ============================
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { signInErrorSelector } from "../../pages/sign-in/store/sign-in.selector";
-import { fetchSignIn } from "../../pages/sign-in/store/sign-in.slice";
-import { clearErrors } from "../../pages/sign-in/store/sign-in.slice";
+import { signInErrorSelector } from "../../redux/sign-in/store/sign-in.selector";
+import { fetchSignIn } from "../../redux/sign-in/store/sign-in.slice";
+import { clearErrors } from "../../redux/sign-in/store/sign-in.slice";
 import { useRouter } from "next/router";
 
 // ========================== styles ===========================
@@ -32,9 +32,7 @@ const ContentGrid = styled(Grid)`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
   min-width: 100%;
-  min-height: 100%;
 `;
 
 interface IFormInput {
@@ -42,7 +40,7 @@ interface IFormInput {
   password: string;
 }
 
-const signIn: FC = () => {
+const SignInPage: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const fecthErrors = useSelector(signInErrorSelector);
 
@@ -83,4 +81,4 @@ const signIn: FC = () => {
   );
 };
 
-export default signIn;
+export default SignInPage;

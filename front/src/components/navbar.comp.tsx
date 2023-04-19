@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { useTranslation } from "react-i18next";
-
 // ========================== mui ==========================
 import { styled } from "@mui/material/styles";
 import {
@@ -33,7 +31,7 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { ISettings, SettingsEnum } from "../shared/settings.enum";
 
 // ========================== store ==========================
-import { logout } from "../pages/sign-in/store/sign-in.slice";
+import { logout } from "../redux/sign-in/store/sign-in.slice";
 import { AppDispatch } from "../redux/store";
 
 // ========================== components ==========================
@@ -44,7 +42,7 @@ import { startCase } from "lodash";
 import {
   fetchAllUsers,
   fetchGetUserFriends,
-} from "@/pages/friends/store/friends.slice";
+} from "@/redux/friends/store/friends.slice";
 
 // ========================== initial settings ==========================
 const drawerWidth = 200;
@@ -119,9 +117,9 @@ const PageNavBarComp = () => {
   const handleCloseUserMenu = (field: string) => {
     switch (field) {
       case SettingsEnum.logout:
-        dispatch(logout());
-        window.localStorage.removeItem("token");
         router.push("/sign-in");
+        window.localStorage.removeItem("token");
+        dispatch(logout());
         break;
       default:
         break;

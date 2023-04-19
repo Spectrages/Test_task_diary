@@ -9,7 +9,7 @@ import { SingleDeedEntity } from "../app/users/entities/single-deed.entity";
 
 const databaseConfig: MongoConnectionOptions = {
   type: "mongodb",
-  host: "localhost",
+  host: "db_mongo",
   port: 27017,
   username: null,
   password: null,

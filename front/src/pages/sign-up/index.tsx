@@ -9,14 +9,14 @@ import PageNavBarComp from "@/components/navbar.comp";
 import PageFooterComp from "@/components/page-footer.component";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { clearErrors } from "../../pages/sign-in/store/sign-in.slice";
+import { clearErrors } from "../../redux/sign-in/store/sign-in.slice";
 import { decodeToken } from "react-jwt";
 import SignUpForm from "@/components/signUp-form.component";
-import { fetchSignUp } from "./store/sign-up.actions";
+import { fetchSignUp } from "../../redux/sign-up/store/sign-up.actions";
 import {
   signUpErrorSelector,
   signUpPendingSelector,
-} from "./store/sign-up.selector";
+} from "../../redux/sign-up/store/sign-up.selector";
 import { useRouter } from "next/router";
 
 // ========================== styles ===========================
@@ -61,7 +61,6 @@ const signUp: FC = () => {
     router.push("/profile");
     dispatch(clearErrors());
   };
-
   return (
     <MainGrid>
       <PageNavBarComp />

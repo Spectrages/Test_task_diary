@@ -9,16 +9,16 @@ import {
   fetchDeleteUserDeed,
   fetchGetUserSingleDeed,
   fetchPutUserDeed,
-} from "../store/deeds.actions";
+} from "../../../redux/deeds/store/deeds.actions";
 import {
   singleDeedErrorSelector,
   singleDeedSelector,
-} from "../store/deeds.selector";
+} from "../../../redux/deeds/store/deeds.selector";
 import DeedEditForm from "@/components/deed-edit-form.component";
-import { clearErrors, clearSingleDeed } from "../store/deeds.slice";
+import { clearErrors, clearSingleDeed } from "../../../redux/deeds/store/deeds.slice";
 import PageNavBarComp from "@/components/navbar.comp";
 import PageFooterComp from "@/components/page-footer.component";
-import { ISingleDeed } from "../types/deed-single.interface";
+import { ISingleDeed } from "../../../types/deeds/deed-single.interface";
 
 // =========================== styled ===========================
 const MainGrid = styled(Grid)`

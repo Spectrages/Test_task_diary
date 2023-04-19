@@ -1,4 +1,4 @@
-import { ISingleDeed } from "@/pages/deeds/types/deed-single.interface";
+import { ISingleDeed } from "@/types/deeds/deed-single.interface";
 import { Box, Button, Paper, Typography } from "@mui/material";
 
 const DeedListForm = ({
@@ -24,6 +24,11 @@ const DeedListForm = ({
         minWidth: "100%",
       }}
     >
+      {deeds.length < 1 && (
+        <Typography variant="h3" fontWeight={"bold"} pb={3}>
+          The list of good deeds is empty
+        </Typography>
+      )}
       {deeds.map((item, index) => {
         return (
           <Paper

@@ -2,20 +2,15 @@ import PageNavBarComp from "@/components/navbar.comp";
 import PageFooterComp from "@/components/page-footer.component";
 import { AppDispatch } from "@/redux/store";
 import styled from "@emotion/styled";
-import { Button, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchDeleteUserDeed,
-  fetchGetUserDeeds,
   fetchPostUserDeed,
-} from "./store/deeds.actions";
-import { deedsSelector, singleDeedErrorSelector } from "./store/deeds.selector";
-import DeedListForm from "@/components/deeds-form.component";
-import { clearErrors, clearSingleDeed } from "./store/deeds.slice";
+} from "../../redux/deeds/store/deeds.actions";
+import { singleDeedErrorSelector } from "../../redux/deeds/store/deeds.selector";
 import DeedCreateForm from "@/components/deed-create-form.component";
-import { ISingleDeedCreate } from "./types/deed-create.interface";
+import { ISingleDeedCreate } from "../../types/deeds/deed-create.interface";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`

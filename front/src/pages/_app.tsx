@@ -6,11 +6,13 @@ import ErrorBoundaryComp from "@/components/error-boundary.component";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <Providers>
-      <ThemeProvider theme={theme}>
-        <Component {...pageProps} />;
-      </ThemeProvider>
-    </Providers>
+    <ErrorBoundaryComp>
+      <Providers>
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />;
+        </ThemeProvider>
+      </Providers>
+    </ErrorBoundaryComp>
   );
 };
 
