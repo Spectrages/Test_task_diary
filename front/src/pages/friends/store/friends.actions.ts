@@ -6,7 +6,6 @@ export const fetchGetUserFriends = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await $api.get(`/users/friends`);
-      console.log(response.data)
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error?.response?.data?.message as string);
@@ -18,7 +17,7 @@ export const fetchAddUserFriend = createAsyncThunk(
   "friends/addUserInFriendList",
   async (userTag: string, { rejectWithValue }) => {
     try {
-      const response = await $api.put(`/users/friends`, userTag);
+      const response = await $api.put(`/users/friends/${userTag}`);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error?.response?.data?.message as string);
@@ -43,6 +42,18 @@ export const fetchFriendDeeds = createAsyncThunk(
   async (userTag: string, { rejectWithValue }) => {
     try {
       const response = await $api.get(`/users/friends/deeds/${userTag}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data?.message as string);
+    }
+  }
+);
+
+export const fetchAllUsers = createAsyncThunk(
+  "users/getAll",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await $api.get(`/users/all`);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error?.response?.data?.message as string);

@@ -122,22 +122,6 @@ export class UsersController {
     return await UserSessionDto.fromEntity(userFromDB);
   }
 
-  //=============================== user can get user by tag =============================================
-  @Get("/:userTag")
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: "Get user by tag" })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: "HttpStatus:200:OK",
-    type: UserByTagDto,
-    isArray: false,
-  })
-  @UsePipes(new ValidationPipe())
-  async getUserByTag(@Param("userTag") userTag: string): Promise<UserByTagDto> {
-    const userFromDB = await this.usersService.getUserByTag(userTag);
-    return await UserByTagDto.fromEntity(userFromDB);
-  }
-
   //=============================== get all =============================================
   @Get("/all")
   @UseGuards(JwtAuthGuard)
@@ -149,8 +133,8 @@ export class UsersController {
     isArray: false,
   })
   @UsePipes(new ValidationPipe())
-  async getAllUsers(): Promise<UserSessionDto[]> {
-    const usersFromDB = await this.usersService.getAllUsers();
+  async getAllUsers(@User() user: UserSessionDto): Promise<UserSessionDto[]> {
+    const usersFromDB = await this.usersService.getAllUsers(user);
     return usersFromDB.map((user) => UserSessionDto.fromEntity(user));
   }
 

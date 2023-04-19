@@ -41,6 +41,10 @@ import SearchComponent from "./search.component";
 import { LinksEnums } from "@/shared/links.enum";
 import { useRouter } from "next/router";
 import { startCase } from "lodash";
+import {
+  fetchAllUsers,
+  fetchGetUserFriends,
+} from "@/pages/friends/store/friends.slice";
 
 // ========================== initial settings ==========================
 const drawerWidth = 200;
@@ -94,8 +98,10 @@ const PageNavBarComp = () => {
     const token = window.localStorage.getItem("token");
     if (token) {
       setIsAuth(true);
+      dispatch(fetchAllUsers());
+      dispatch(fetchGetUserFriends());
     }
-  }, [dispatch]);
+  }, []);
 
   // ===== handlers =====
   const handleDrawerOpen = () => {
@@ -115,7 +121,7 @@ const PageNavBarComp = () => {
       case SettingsEnum.logout:
         dispatch(logout());
         window.localStorage.removeItem("token");
-        router.push('/sign-in')
+        router.push("/sign-in");
         break;
       default:
         break;
@@ -157,7 +163,6 @@ const PageNavBarComp = () => {
               variant="h6"
               noWrap
               component="a"
-              href="/"
               sx={{
                 mr: 2,
                 display: { md: "flex" },
@@ -166,7 +171,9 @@ const PageNavBarComp = () => {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
+                cursor: "pointer",
               }}
+              onClick={() => router.push(`/deeds`)}
             >
               LOGO
             </Typography>
@@ -177,10 +184,9 @@ const PageNavBarComp = () => {
                 gap: 3,
               }}
             >
-              <SearchComponent label="Search" />
-
               {isAuth ? (
                 <>
+                  <SearchComponent />
                   <Tooltip
                     title="Open settings"
                     data-testid="open-settings-button-test"
@@ -266,7 +272,7 @@ const PageNavBarComp = () => {
         {/* links */}
         <List>
           <ListItem key={"Pages"} disablePadding>
-            <ListItemButton onClick={() => console.log("/")}>
+            <ListItemButton>
               <ListItemText
                 primary={
                   <Typography sx={{ fontWeight: "bold" }}>Pages</Typography>

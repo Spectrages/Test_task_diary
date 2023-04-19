@@ -47,11 +47,12 @@ const deeds = () => {
   const handleDelete = (deedId: string) => {
     dispatch(fetchDeleteUserDeed(deedId));
     dispatch(clearErrors());
+    dispatch(fetchGetUserDeeds());  
   };
 
   useEffect(() => {
     dispatch(fetchGetUserDeeds());
-  }, [handleDelete]);
+  }, []);
 
   return (
     <MainGrid>

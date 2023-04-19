@@ -81,7 +81,7 @@ export const FriendsListComponent = ({
                 sx={{
                   width: "100%",
                 }}
-                onClick={() => handleRemove(item?.tag)}
+                onClick={() => handleRemove(item.tag)}
               >
                 Remove from friends
               </Button>

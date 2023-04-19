@@ -62,13 +62,13 @@ describe("User controller", () => {
     });
   });
 
-  describe("endpoint: Get user profile by tag", () => {
-    it("should be return specific user", async () => {
-      expect(await controller.getUserByTag("CoolMan1")).toEqual(
-        userByTag
-      );
-    });
-  });
+  // describe("endpoint: Get user profile by tag", () => {
+  //   it("should be return specific user", async () => {
+  //     expect(await controller.getUserByTag("CoolMan1")).toEqual(
+  //       userByTag
+  //     );
+  //   });
+  // });
 
   describe("endpoint: Create new deed", () => {
     it("should be return user with new deed", async () => {

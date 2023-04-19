@@ -4,21 +4,25 @@ import { createSlice } from "@reduxjs/toolkit";
 // ========================== actions ===========================
 import { FriendsState } from "../types/friends-state.interface";
 import {
+  fetchAllUsers,
   fetchFriendDeeds,
   fetchGetUserFriends,
   fetchRemoveUserFriend,
 } from "./friends.actions";
 
 const initialState: FriendsState = {
+  users: [],
   friends: [],
   singleFriend: null,
   friendDeeds: [],
   errors: {
+    users: null,
     friends: null,
     singleFriend: null,
     friendDeeds: null,
   },
   pending: {
+    users: false,
     friends: false,
     singleFriend: false,
     friendDeeds: false,
@@ -53,7 +57,7 @@ const friendsSlice = createSlice({
         }
       );
 
-    //********************** GET CURRENT ************************/
+    //********************** GET CURRENT DEEDS ************************/
     builder
       .addCase(fetchFriendDeeds.pending, (state) => {
         state.pending.friendDeeds = false;
@@ -87,6 +91,24 @@ const friendsSlice = createSlice({
           state.singleFriend = null;
           state.errors.singleFriend = action.payload;
         }
+      );
+
+    //********************** GET ALL USERS ************************/
+    builder
+      .addCase(fetchAllUsers.pending, (state) => {
+        state.pending.users = false;
+      })
+      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+        state.pending.users = true;
+        state.users = action.payload;
+      })
+      .addCase(
+        fetchAllUsers.rejected,
+        (state, action: any & { payload: any }) => {
+          state.pending.users = false;
+          state.users = [];
+          state.errors.users = action.payload;
+        }
       )
 
       .addDefaultCase(() => {});
@@ -95,4 +117,9 @@ const friendsSlice = createSlice({
 const { actions, reducer } = friendsSlice;
 export default reducer;
 export const { clearErrors } = friendsSlice.actions;
-export { fetchGetUserFriends, fetchRemoveUserFriend, fetchFriendDeeds };
+export {
+  fetchGetUserFriends,
+  fetchRemoveUserFriend,
+  fetchFriendDeeds,
+  fetchAllUsers,
+};

@@ -23,8 +23,16 @@ export class UsersService {
     private readonly deedRepository: SingleDeedRepository
   ) {}
 
-  async getAllUsers(): Promise<UsersEntity[]> {
-    return await this.userRepository.getAll();
+  async getAllUsers(user: UserSessionDto): Promise<UsersEntity[]> {
+    const currentUser = await this.userRepository.getUserById(user._id);
+    if (!currentUser) {
+      throw new HttpException(
+        `${I18nContext.current().t("errors.user.userDoesNotExist")}`,
+        HttpStatus.NOT_FOUND
+      );
+    }
+    const userList = await this.userRepository.getAll();
+    return userList.filter((item) => item.tag !== currentUser.tag);
   }
 
   async getUserByTag(userTag: string): Promise<UsersEntity> {
@@ -78,9 +86,14 @@ export class UsersService {
   ): Promise<SingleDeedEntity[]> {
     const user = await this.userRepository.getUserByTag(userTag);
 
+    if (!user)
+      throw new HttpException(
+        `${I18nContext.current().t("errors.user.userDoesNotExist")}`,
+        HttpStatus.NOT_FOUND
+      );
+
     const current = await this.userRepository.getUserById(currentUser._id);
     const friendList = current.friends;
-
     if (friendList.length < 1)
       throw new HttpException(
         `${I18nContext.current().t("errors.user.noAccess")}`,
@@ -88,8 +101,7 @@ export class UsersService {
       );
 
     const res = friendList.map((item) => item === user.tag.toString());
-
-    if (res.includes(false))
+    if (res.every((value) => value === false))
       throw new HttpException(
         `${I18nContext.current().t("errors.user.noAccess")}`,
         HttpStatus.BAD_REQUEST
@@ -101,17 +113,18 @@ export class UsersService {
   }
 
   async removeFromFriendList(userTag: string, user: UserSessionDto) {
+    const currentUser = await this.userRepository.getUserById(user._id);
+
     const friend = await this.userRepository.getUserByTag(userTag);
+
     if (!friend)
       throw new HttpException(
         `${I18nContext.current().t("errors.user.userDoesNotExist")}`,
         HttpStatus.NOT_FOUND
       );
 
-    let currentUser = await this.userRepository.getUserById(user._id);
-
     const newFriends = currentUser.friends.filter(
-      (item) => item === friend.tag
+      (item) => item !== friend.tag
     );
     currentUser.friends = newFriends;
     return await this.userRepository.updateUser(currentUser);
@@ -244,8 +257,10 @@ export class UsersService {
 
     const friendsTags = currentUser.friends.map((item) => item.toString());
     const usersList = await this.userRepository.getAll();
-    return usersList.filter((item) =>
+    const friendList = usersList.filter((item) =>
       friendsTags.includes(item.tag.toString())
     );
+
+    return await friendList.filter((item) => item.tag !== currentUser.tag);
   }
 }

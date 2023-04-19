@@ -20,7 +20,18 @@ export class SecurityService {
 
   async generateJwt(user: UsersEntity): Promise<TokenDto> {
     const payload = await UserSessionDto.fromEntity(user);
-    const token = this.jwtService.sign(payload);
+    const payloadForToken = {
+      _id: payload._id,
+      email: payload.email,
+      firstname: payload.firstname,
+      middlename: payload.middlename,
+      lastname: payload.lastname,
+      tag: payload.tag,
+      rating: payload.rating,
+      created: payload.created,
+      updated: payload.updated,
+    };
+    const token = this.jwtService.sign(payloadForToken);
     return { token };
   }
 

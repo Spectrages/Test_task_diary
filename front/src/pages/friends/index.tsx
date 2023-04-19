@@ -6,7 +6,7 @@ import styled from "@emotion/styled";
 import { Grid, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { friendsSelector } from "./store/friends.selectors";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   fetchFriendDeeds,
   fetchGetUserFriends,
@@ -40,7 +40,7 @@ const FriendsListPage = () => {
 
   const handleRemove = (userTag: string) => {
     dispatch(fetchRemoveUserFriend(userTag));
-    router.push(`/friends`);
+    dispatch(fetchGetUserFriends());
   };
 
   const handleShow = (userTag: string) => {

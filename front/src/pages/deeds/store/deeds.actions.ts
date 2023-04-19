@@ -43,7 +43,6 @@ export const fetchPutUserDeed = createAsyncThunk(
   "deeds/putUserDeed",
   async (data: IDeedUpdateDto, { rejectWithValue }) => {
     try {
-      console.log(data);
       const response = await $api.put(`/users/deeds/${data._id}`, {
         name: data.name,
         description: data.description,

@@ -26,3 +26,11 @@ export const friendDeedsErrorSelector = (state: RootState) =>
 
 export const friendDeedsPendingSelector = (state: RootState) =>
   state.friends.pending.friendDeeds;
+
+export const usersSelector = (state: RootState) => state.friends.users;
+
+export const usersErrorSelector = (state: RootState) =>
+  state.friends.errors.users;
+
+export const usersPendingSelector = (state: RootState) =>
+  state.friends.pending.users;
