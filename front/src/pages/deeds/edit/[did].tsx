@@ -1,23 +1,34 @@
-import DeedListForm from "@/components/deeds-form.component";
-import { AppDispatch } from "@/redux/store";
-import styled from "@emotion/styled";
-import { Grid } from "@mui/material";
-import { useRouter } from "next/router";
+//=============================== react =================================
 import { useEffect, useState } from "react";
+
+//=============================== next ==================================
+import { useRouter } from "next/router";
+
+//=============================== redux =================================
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchDeleteUserDeed,
-  fetchGetUserSingleDeed,
-  fetchPutUserDeed,
-} from "../../../redux/deeds/store/deeds.actions";
+import { AppDispatch } from "@/redux/store";
 import {
   singleDeedErrorSelector,
   singleDeedSelector,
 } from "../../../redux/deeds/store/deeds.selector";
+import {
+  clearErrors,
+  clearSingleDeed,
+  fetchDeleteUserDeed,
+  fetchGetUserSingleDeed,
+  fetchPutUserDeed,
+} from "../../../redux/deeds/store/deeds.slice";
+
+//=============================== components ============================
 import DeedEditForm from "@/components/deed-edit-form.component";
-import { clearErrors, clearSingleDeed } from "../../../redux/deeds/store/deeds.slice";
-import PageNavBarComp from "@/components/navbar.comp";
+import PageNavBarComp from "@/components/navbar.component";
 import PageFooterComp from "@/components/page-footer.component";
+
+//=============================== mui ===================================
+import styled from "@emotion/styled";
+import { Grid } from "@mui/material";
+
+//=============================== interfaces =============================
 import { ISingleDeed } from "../../../types/deeds/deed-single.interface";
 
 // =========================== styled ===========================
@@ -40,14 +51,21 @@ const ContentGrid = styled(Grid)`
 `;
 
 const SingleDeedEditPage = () => {
+  // ===== hooks =====
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
   const singleDeed = useSelector(singleDeedSelector);
+
+  // ===== local states =====
   const [isEditable, setIsEditable] = useState<boolean>(true);
   const [isClicked, setIsClicked] = useState<boolean>(false);
-  const router = useRouter();
+
   const { did } = router.query;
+
+  // ===== selectors =====
   const fetchingErrors = useSelector(singleDeedErrorSelector);
 
+  //===== handlers =====
   const handleBack = () => {
     dispatch(clearSingleDeed());
     router.push(`/deeds`);

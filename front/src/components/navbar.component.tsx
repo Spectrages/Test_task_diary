@@ -2,6 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
+// ========================== next ==========================
+import { useRouter } from "next/router";
+
+// ========================== lodash ==========================
+import { startCase } from "lodash";
+
 // ========================== mui ==========================
 import { styled } from "@mui/material/styles";
 import {
@@ -28,21 +34,20 @@ import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 
 // ========================== enums ==========================
-import { ISettings, SettingsEnum } from "../shared/settings.enum";
+import { SettingsEnum } from "../shared/settings.enum";
+import { LinksEnums } from "@/shared/links.enum";
 
 // ========================== store ==========================
 import { logout } from "../redux/sign-in/store/sign-in.slice";
-import { AppDispatch } from "../redux/store";
-
-// ========================== components ==========================
-import SearchComponent from "./search.component";
-import { LinksEnums } from "@/shared/links.enum";
-import { useRouter } from "next/router";
-import { startCase } from "lodash";
 import {
   fetchAllUsers,
   fetchGetUserFriends,
 } from "@/redux/friends/store/friends.slice";
+
+import { AppDispatch } from "../redux/store";
+
+// ========================== components ==========================
+import SearchComponent from "./search.component";
 
 // ========================== initial settings ==========================
 const drawerWidth = 200;

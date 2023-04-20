@@ -3,6 +3,7 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 // =========================== yup =========================================
 import { yupResolver } from "@hookform/resolvers/yup";
+import { formSchema } from "./profile-form.const";
 
 // =========================== mui =========================================
 import TextField from "@mui/material/TextField";
@@ -10,9 +11,8 @@ import Button from "@mui/material/Button";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Box, FormControl, Paper, Typography } from "@mui/material";
 
-// =========================== component ======================================
+// =========================== components ======================================
 import TemporaryTypography from "./temporary-typography.component";
-import { formSchema } from "./profile-form.const";
 
 interface IUserSessionDto {
   _id: string;
@@ -45,6 +45,7 @@ const ProfileForm = ({
   setIsEditable: (b: boolean) => void;
   handleSave: (userDataForUpdate: IUserSessionDto) => void;
 }) => {
+  //======== form register ========
   const {
     register,
     control,
@@ -55,6 +56,7 @@ const ProfileForm = ({
     resolver: yupResolver(formSchema),
   });
 
+  //===== method remove empty fields ======
   const removeEmptyFields = (obj: IUserSessionDto): IUserSessionDto => {
     const newObj = Object.fromEntries(
       Object.entries(obj).filter(([_, v]) => v !== (null || undefined))
@@ -62,6 +64,7 @@ const ProfileForm = ({
     return newObj as IUserSessionDto;
   };
 
+  //===== method return date in the correct form ======
   const correctDate = (date: number) => {
     const newDate = new Date(date);
     return newDate.toLocaleString();

@@ -3,6 +3,7 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 // =========================== yup =========================================
 import { yupResolver } from "@hookform/resolvers/yup";
+import { formSchema } from "./deed-edit.const";
 
 // =========================== mui =========================================
 import TextField from "@mui/material/TextField";
@@ -12,7 +13,8 @@ import { Box, FormControl, Paper, Typography } from "@mui/material";
 
 // =========================== component ======================================
 import TemporaryTypography from "./temporary-typography.component";
-import { formSchema } from "./deed-edit.const";
+
+// =========================== interfaces =====================================
 import { ISingleDeed } from "@/types/deeds/deed-single.interface";
 
 const DeedEditForm = ({
@@ -34,6 +36,8 @@ const DeedEditForm = ({
   setIsEditable: (b: boolean) => void;
   handleSave: (deedDataForUpdate: ISingleDeed) => void;
 }) => {
+
+    //======== form register ========
   const {
     register,
     control,

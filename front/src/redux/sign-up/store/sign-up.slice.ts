@@ -58,3 +58,4 @@ const signUpSlice = createSlice({
 const { actions, reducer } = signUpSlice;
 export default reducer;
 export const { logout, clearErrors } = signUpSlice.actions;
+export { fetchSignUp };

@@ -1,8 +1,15 @@
+//=============================== next ==================================
 import type { AppProps } from "next/app";
+
+//=============================== redux =================================
 import Providers from "../redux/provider";
-import theme from "@/theme/mainTheme";
-import { ThemeProvider } from "@emotion/react";
+
+//=============================== components ============================
 import ErrorBoundaryComp from "@/components/error-boundary.component";
+
+//=============================== theme =================================
+import { ThemeProvider } from "@emotion/react";
+import theme from "@/theme/mainTheme";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (

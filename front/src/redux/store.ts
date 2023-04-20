@@ -1,7 +1,8 @@
+// =========================== redux ===========================
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 
-// =========================== Slices ===========================
+// =========================== slices ===========================
 import signUp from "./sign-up/store/sign-up.slice";
 import signIn from "./sign-in/store/sign-in.slice";
 import profile from "./profile/store/profile.slice";

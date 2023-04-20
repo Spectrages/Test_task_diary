@@ -1,4 +1,7 @@
+// =========================== types =====================================
 import { UserSessionDto } from "@/shared/user-session.dto";
+
+// =========================== interfaces =====================================
 import { Box, Paper, Button, Typography } from "@mui/material";
 
 export const FriendsListComponent = ({
@@ -10,6 +13,7 @@ export const FriendsListComponent = ({
   handleShow: (s: string) => void;
   handleRemove: (s: string) => void;
 }) => {
+  //===== method return date in the correct form ======
   const correctDate = (date: number) => {
     const newDate = new Date(date);
     return newDate.toLocaleString();

@@ -1,15 +1,28 @@
-import PageNavBarComp from "@/components/navbar.comp";
-import PageFooterComp from "@/components/page-footer.component";
+//============================== react ====================================
+import { useEffect, useState } from "react";
+
+//============================== next =====================================
+import { useRouter } from "next/router";
+
+//============================== redux ====================================
+import { useDispatch, useSelector } from "react-redux";
+import { deedsSelector } from "../../redux/deeds/store/deeds.selector";
 import { AppDispatch } from "@/redux/store";
+import {
+  clearErrors,
+  clearSingleDeed,
+  fetchDeleteUserDeed,
+  fetchGetUserDeeds,
+} from "../../redux/deeds/store/deeds.slice";
+
+//============================== components ===============================
+import PageNavBarComp from "@/components/navbar.component";
+import PageFooterComp from "@/components/page-footer.component";
+import DeedListForm from "@/components/deeds-form.component";
+
+//============================== mui ======================================
 import styled from "@emotion/styled";
 import { Button, Grid } from "@mui/material";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchDeleteUserDeed, fetchGetUserDeeds } from "../../redux/deeds/store/deeds.actions";
-import { deedsSelector } from "../../redux/deeds/store/deeds.selector";
-import DeedListForm from "@/components/deeds-form.component";
-import { clearErrors, clearSingleDeed } from "../../redux/deeds/store/deeds.slice";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`
@@ -30,12 +43,16 @@ const ContentGrid = styled(Grid)`
   min-height: 100%;
 `;
 
-const deeds = () => {
+const DeedsListPage = () => {
+  //===== hooks =====
   const dispatch = useDispatch<AppDispatch>();
-  const [isFriend, setIsFriend] = useState(false);
-  const deeds = useSelector(deedsSelector);
   const router = useRouter();
 
+  //===== local states =====
+  const [isFriend, setIsFriend] = useState(false);
+  const deeds = useSelector(deedsSelector);
+
+  //===== handlers ====
   const handleEdit = (deedId: string) => {
     dispatch(clearSingleDeed());
     router.push({
@@ -78,4 +95,4 @@ const deeds = () => {
   );
 };
 
-export default deeds;
+export default DeedsListPage;

@@ -1,22 +1,23 @@
-// ========================== react ============================
-import { FC, useEffect } from "react";
-import { decodeToken } from "react-jwt";
+//=============================== react =================================
+import { FC } from "react";
 
-// ========================== mui ==============================
+//=============================== next ==================================
+import { useRouter } from "next/router";
+
+//=============================== mui ===================================
 import { Grid, styled } from "@mui/material";
 
-// ========================== components =======================
-import PageNavBarComp from "@/components/navbar.comp";
+//=============================== components ============================
+import PageNavBarComp from "@/components/navbar.component";
 import PageFooterComp from "@/components/page-footer.component";
 import SignInForm from "@/components/signIn-form.component";
 
-// ========================== redux ============================
+//=============================== redux =================================
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { signInErrorSelector } from "../../redux/sign-in/store/sign-in.selector";
 import { fetchSignIn } from "../../redux/sign-in/store/sign-in.slice";
 import { clearErrors } from "../../redux/sign-in/store/sign-in.slice";
-import { useRouter } from "next/router";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`
@@ -41,13 +42,17 @@ interface IFormInput {
 }
 
 const SignInPage: FC = () => {
+  // ===== hooks =====
   const dispatch = useDispatch<AppDispatch>();
-  const fecthErrors = useSelector(signInErrorSelector);
   const router = useRouter();
 
+  // ===== selectors =====
+  const fecthErrors = useSelector(signInErrorSelector);
+
+  //===== handlers =====
   const handleSignIn = async (data: IFormInput) => {
     const newToken = await dispatch(fetchSignIn(data));
-    if (!fecthErrors.token) {
+    if (newToken.meta.requestStatus === "fulfilled") {
       window.localStorage.setItem("token", newToken.payload);
       router.push(`/profile`);
       dispatch(clearErrors());

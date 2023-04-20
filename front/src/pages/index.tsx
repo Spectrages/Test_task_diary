@@ -1,6 +1,11 @@
-import { CircularProgress, Grid, styled } from "@mui/material";
-import { useRouter } from "next/router";
+//=============================== react =================================
 import { useEffect, useState } from "react";
+
+//=============================== next ==================================
+import { useRouter } from "next/router";
+
+//=============================== mui ===================================
+import { CircularProgress, Grid, styled } from "@mui/material";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`
@@ -13,13 +18,11 @@ const MainGrid = styled(Grid)`
 `;
 
 const MainPage = () => {
-  const [isAuth, setIsAuth] = useState(false);
   const router = useRouter();
   // ===== auth check =====
   useEffect(() => {
     const token = window.localStorage.getItem("token");
     if (token) {
-      setIsAuth(true);
       router.push(`/deeds`);
     } else {
       router.push(`/sign-in`);

@@ -27,6 +27,7 @@ const SignInForm = ({
   handleSignIn: (s: IFormInput) => void;
   fecthErrors: string | null;
 }) => {
+  //======== form register ========
   const {
     register,
     control,
@@ -58,6 +59,7 @@ const SignInForm = ({
         onSubmit={handleSubmit(onSubmit)}
         style={{ display: "flex", flexDirection: "column", gap: 20 }}
       >
+        {/***********************************  Email ***********************************/}
         <Controller
           name="email"
           control={control}
@@ -77,6 +79,7 @@ const SignInForm = ({
           {errors.email?.message}
         </Typography>
 
+        {/***********************************  Password ***********************************/}
         <Controller
           name="password"
           control={control}

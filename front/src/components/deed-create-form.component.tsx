@@ -3,16 +3,17 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 // =========================== yup =========================================
 import { yupResolver } from "@hookform/resolvers/yup";
+import { formSchema } from "./deed-create.const";
 
 // =========================== mui =========================================
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Box, FormControl, Paper, Typography } from "@mui/material";
 
 // =========================== component ======================================
 import TemporaryTypography from "./temporary-typography.component";
-import { formSchema } from "./deed-create.const";
+
+// =========================== interfaces =====================================
 import { ISingleDeedCreate } from "@/types/deeds/deed-create.interface";
 
 const DeedCreateForm = ({
@@ -24,6 +25,7 @@ const DeedCreateForm = ({
   handleBack: () => void;
   handleSave: (deedDataForUpdate: ISingleDeedCreate) => void;
 }) => {
+  //======== form register ========
   const {
     register,
     control,

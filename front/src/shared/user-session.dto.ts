@@ -1,3 +1,4 @@
+// =========================== types ===========================
 import { UUIDDto } from "./uuid-dto.type";
 
 export interface UserSessionDto extends UUIDDto {

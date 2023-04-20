@@ -1,24 +1,28 @@
-import PageNavBarComp from "@/components/navbar.comp";
-import PageFooterComp from "@/components/page-footer.component";
-import { AppDispatch } from "@/redux/store";
-import styled from "@emotion/styled";
-import { Button, Grid } from "@mui/material";
+//=============================== next ==================================
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+
+//=============================== redux =================================
+import { AppDispatch } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import DeedListForm from "@/components/deeds-form.component";
 import {
-  friendDeedsSelector,
   friendsSelector,
-  singleFriendSelector,
   singleUserSelector,
 } from "../../redux/friends/store/friends.selectors";
-import UserSingleComponent from "@/components/user-single.component";
+
 import {
   fetchAddUserFriend,
   fetchFriendDeeds,
   fetchRemoveUserFriend,
 } from "@/redux/friends/store/friends.slice";
+
+//=============================== components ============================
+import PageNavBarComp from "@/components/navbar.component";
+import PageFooterComp from "@/components/page-footer.component";
+import UserSingleComponent from "@/components/user-single.component";
+
+//=============================== mui ===================================
+import styled from "@emotion/styled";
+import { Grid } from "@mui/material";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`
@@ -40,17 +44,20 @@ const ContentGrid = styled(Grid)`
 `;
 
 const SingleUserPage = () => {
+  // ===== hooks =====
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
 
+  // ===== selectors =====
   const singleUser = useSelector(singleUserSelector);
   const friends = useSelector(friendsSelector);
 
+  // ===== find friends in the user list =====
   const isFriend = friends.map((item) => item._id === singleUser?._id);
 
   const result = isFriend.includes(true);
 
-  const router = useRouter();
-
+  // ===== handlers =====
   const handleGetUserDeeds = (tag: string) => {
     dispatch(fetchFriendDeeds(tag));
     router.push({

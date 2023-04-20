@@ -1,30 +1,29 @@
 // ========================== react ============================
 import { FC, useEffect, useState } from "react";
-import { decodeToken } from "react-jwt";
 
 // ========================== mui ==============================
 import { Grid, styled } from "@mui/material";
 
 // ========================== components =======================
-import PageNavBarComp from "@/components/navbar.comp";
+import PageNavBarComp from "@/components/navbar.component";
 import PageFooterComp from "@/components/page-footer.component";
-import SignInForm from "@/components/signIn-form.component";
+import ProfileForm from "@/components/profile-form.component";
 
 // ========================== redux ============================
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { signInErrorSelector } from "../../redux/sign-in/store/sign-in.selector";
-import { fetchSignIn } from "../../redux/sign-in/store/sign-in.slice";
-import { clearErrors, fetchDeleteUserAccount } from "../../redux/profile/store/profile.slice";
+import {
+  clearErrors,
+  fetchDeleteUserAccount,
+  fetchGetUserInfo,
+  fetchUpdateUserInfo,
+} from "../../redux/profile/store/profile.slice";
 import { useRouter } from "next/router";
-import ProfileForm from "@/components/profile-form.component";
+
 import {
   profileErrorsSelector,
   profileInfoSelector,
-  profileLoadingSelector,
 } from "../../redux/profile/store/profile.selector";
-import { fetchGetUserInfo, fetchUpdateUserInfo } from "../../redux/profile/store/profile.slice";
-import { current } from "@reduxjs/toolkit";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`
@@ -54,14 +53,19 @@ interface IUserSessionDto {
 }
 
 const profile: FC = () => {
+  // ===== hooks =====
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
+
+  // ===== local state =====
   const [isEditable, setIsEditable] = useState<boolean>(true);
   const [isClicked, setIsClicked] = useState<boolean>(false);
-  const decodeUser = useSelector(profileInfoSelector);
 
-  const router = useRouter();
+  // ===== selectors =====
+  const decodeUser = useSelector(profileInfoSelector);
   const fetchingErrors = useSelector(profileErrorsSelector);
 
+  //===== handlers =====
   const handleBack = () => {
     dispatch(clearErrors());
     router.push(`/deeds`);

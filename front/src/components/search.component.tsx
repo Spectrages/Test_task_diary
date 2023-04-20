@@ -51,19 +51,18 @@ const SearchComponent = () => {
     dispatch(fetchGetUserFriends());
   }, []);
 
+  // ===== selectors =====
   const users = useSelector(usersSelector);
   const friends = useSelector(friendsSelector);
 
+  // ===== creating an array like [{_id: string, tag: string, isFriend: boolean}] =====
   const tagsIdsObj = users.map((item) => {
     return { _id: item._id, tag: item.tag };
   });
-
   const friendsTagsArray = friends.map((item) => item.tag);
-
   const isFriend = tagsIdsObj.map((item) =>
     friendsTagsArray.includes(item.tag)
   );
-
   const result = tagsIdsObj.map((item, index) => {
     return { _id: item._id, tag: item.tag, isFriend: isFriend[index] };
   });
@@ -73,6 +72,7 @@ const SearchComponent = () => {
     getOptionLabel: (option: IUserByTag) => option?.tag ?? "Still fetching...",
   };
 
+    // ===== handlers =====
   const handleGoToSingleUserPage = (userId: string) => {
     dispatch(fetchCurrentUserById(userId));
     router.push({
@@ -81,7 +81,6 @@ const SearchComponent = () => {
     });
   };
 
-  // ===== handlers =====
   return (
     <Search>
       <Autocomplete

@@ -1,18 +1,27 @@
-import FriendsListComponent from "@/components/friend-list.component";
-import PageNavBarComp from "@/components/navbar.comp";
-import PageFooterComp from "@/components/page-footer.component";
+//=============================== react =================================
+import { useEffect } from "react";
+
+//=============================== next ==================================
+import { useRouter } from "next/router";
+
+//=============================== redux =================================
 import { AppDispatch } from "@/redux/store";
-import styled from "@emotion/styled";
-import { Grid, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { friendsSelector } from "../../redux/friends/store/friends.selectors";
-import { useEffect, useState } from "react";
 import {
   fetchFriendDeeds,
   fetchGetUserFriends,
   fetchRemoveUserFriend,
 } from "../../redux/friends/store/friends.slice";
-import { useRouter } from "next/router";
+import { friendsSelector } from "../../redux/friends/store/friends.selectors";
+
+//=============================== components ============================
+import FriendsListComponent from "@/components/friend-list.component";
+import PageNavBarComp from "@/components/navbar.component";
+import PageFooterComp from "@/components/page-footer.component";
+
+//=============================== mui ===================================
+import styled from "@emotion/styled";
+import { Grid, Typography } from "@mui/material";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`
@@ -34,10 +43,14 @@ const ContentGrid = styled(Grid)`
 `;
 
 const FriendsListPage = () => {
+  // ===== hooks =====
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+
+  // ===== selectors =====
   const friends = useSelector(friendsSelector);
 
+  //===== handlers =====
   const handleRemove = (userTag: string) => {
     dispatch(fetchGetUserFriends());
     dispatch(fetchRemoveUserFriend(userTag));

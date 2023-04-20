@@ -1,16 +1,16 @@
-import PageNavBarComp from "@/components/navbar.comp";
+//=============================== react =================================
+import { useState } from "react";
+//=============================== redux =================================
+import { useSelector } from "react-redux";
+import { friendDeedsSelector } from "../../redux/friends/store/friends.selectors";
+//=============================== components ============================
+import PageNavBarComp from "@/components/navbar.component";
 import PageFooterComp from "@/components/page-footer.component";
-import { AppDispatch } from "@/redux/store";
-import styled from "@emotion/styled";
-import { Button, Grid } from "@mui/material";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import DeedListForm from "@/components/deeds-form.component";
-import {
-  friendDeedsSelector,
-  singleFriendSelector,
-} from "../../redux/friends/store/friends.selectors";
+
+//=============================== mui ===================================
+import styled from "@emotion/styled";
+import { Grid } from "@mui/material";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`
@@ -32,7 +32,10 @@ const ContentGrid = styled(Grid)`
 `;
 
 const FriendDeedsPage = () => {
+  // ===== local states =====
   const [isFriend, setIsFriend] = useState(true);
+
+  // ===== selectors =====
   const deeds = useSelector(friendDeedsSelector);
 
   return (

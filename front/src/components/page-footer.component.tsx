@@ -1,12 +1,14 @@
 // ========================== react ==========================
 import React, { FC } from "react";
 
+// ========================== next ==========================
+import { useRouter } from "next/router";
+
 // ========================== mui ==========================
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { useRouter } from "next/router";
 
 const PageFooterComp: FC = () => {
   const router = useRouter();

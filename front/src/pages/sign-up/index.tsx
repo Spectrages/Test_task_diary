@@ -1,23 +1,26 @@
-// ========================== react ============================
-import { FC, useEffect } from "react";
+//=============================== react =================================
+import { FC } from "react";
 
-// ========================== mui ==============================
+//=============================== next ==================================
+import { useRouter } from "next/router";
+
+//=============================== mui ===================================
 import { Grid, styled } from "@mui/material";
 
-// ========================== components =======================
-import PageNavBarComp from "@/components/navbar.comp";
+//=============================== components ============================
+import PageNavBarComp from "@/components/navbar.component";
 import PageFooterComp from "@/components/page-footer.component";
+import SignUpForm from "@/components/signUp-form.component";
+
+//=============================== redux =================================
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { clearErrors } from "../../redux/sign-in/store/sign-in.slice";
-import { decodeToken } from "react-jwt";
-import SignUpForm from "@/components/signUp-form.component";
-import { fetchSignUp } from "../../redux/sign-up/store/sign-up.actions";
 import {
-  signUpErrorSelector,
-  signUpPendingSelector,
-} from "../../redux/sign-up/store/sign-up.selector";
-import { useRouter } from "next/router";
+  clearErrors,
+  fetchSignUp,
+} from "../../redux/sign-up/store/sign-up.slice";
+
+import { signUpErrorSelector } from "../../redux/sign-up/store/sign-up.selector";
 
 // ========================== styles ===========================
 const MainGrid = styled(Grid)`
@@ -49,23 +52,23 @@ interface IFormInput {
 }
 
 const signUp: FC = () => {
+  // ===== hooks =====
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
+  // ===== selectors =====
   const fecthingErrors = useSelector(signUpErrorSelector);
 
-  useEffect(() => {
-    dispatch(clearErrors());
-  }, []);
-
+  // ===== handlers =====
   const handleSignUp = async (data: IFormInput) => {
     const newToken = await dispatch(fetchSignUp(data));
-    if (!fecthingErrors.token) {
+    if (newToken.meta.requestStatus === "fulfilled") {
       window.localStorage.setItem("token", newToken.payload);
-      router.push("/profile");
+      router.push(`/profile`);
       dispatch(clearErrors());
     }
   };
+
   return (
     <MainGrid>
       <PageNavBarComp />

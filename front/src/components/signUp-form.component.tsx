@@ -64,6 +64,7 @@ const SignUpForm = ({
         onSubmit={handleSubmit(onSubmit)}
         style={{ display: "flex", flexDirection: "column", gap: 5 }}
       >
+        {/***********************************  Firstname ***********************************/}
         <Controller
           name="firstname"
           control={control}
@@ -83,6 +84,7 @@ const SignUpForm = ({
           {errors.firstname?.message}
         </Typography>
 
+        {/***********************************  Middlename ***********************************/}
         <Controller
           name="middlename"
           control={control}
@@ -98,6 +100,7 @@ const SignUpForm = ({
           )}
         />
 
+        {/***********************************  Lastname ***********************************/}
         <Controller
           name="lastname"
           control={control}
@@ -117,6 +120,7 @@ const SignUpForm = ({
           {errors.lastname?.message}
         </Typography>
 
+        {/***********************************  Tag ***********************************/}
         <Controller
           name="tag"
           control={control}
@@ -136,6 +140,7 @@ const SignUpForm = ({
           {errors.tag?.message}
         </Typography>
 
+        {/***********************************  Email ***********************************/}
         <Controller
           name="email"
           control={control}
@@ -155,6 +160,7 @@ const SignUpForm = ({
           {errors.email?.message}
         </Typography>
 
+        {/***********************************  Password ***********************************/}
         <Controller
           name="password"
           control={control}
@@ -175,6 +181,7 @@ const SignUpForm = ({
           {errors.password?.message}
         </Typography>
 
+        {/***********************************  Confirm password ***********************************/}
         <Controller
           name="confirmPassword"
           control={control}

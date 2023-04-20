@@ -1,15 +1,23 @@
-import PageNavBarComp from "@/components/navbar.comp";
-import PageFooterComp from "@/components/page-footer.component";
+//=============================== react =================================
+import { useDispatch, useSelector } from "react-redux";
+
+//=============================== next ==================================
+import { useRouter } from "next/router";
+//=============================== redux =================================
 import { AppDispatch } from "@/redux/store";
+import { fetchPostUserDeed } from "@/redux/deeds/store/deeds.slice";
+import { singleDeedErrorSelector } from "../../redux/deeds/store/deeds.selector";
+
+//=============================== components ============================
+import PageNavBarComp from "@/components/navbar.component";
+import PageFooterComp from "@/components/page-footer.component";
+import DeedCreateForm from "@/components/deed-create-form.component";
+
+//=============================== mui ===================================
 import styled from "@emotion/styled";
 import { Grid } from "@mui/material";
-import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchPostUserDeed,
-} from "../../redux/deeds/store/deeds.actions";
-import { singleDeedErrorSelector } from "../../redux/deeds/store/deeds.selector";
-import DeedCreateForm from "@/components/deed-create-form.component";
+
+//=============================== interfaces ============================
 import { ISingleDeedCreate } from "../../types/deeds/deed-create.interface";
 
 // ========================== styles ===========================
@@ -32,10 +40,14 @@ const ContentGrid = styled(Grid)`
 `;
 
 const CreateDeed = () => {
+  // ===== hooks =====
   const dispatch = useDispatch<AppDispatch>();
-  const fetchingErrors = useSelector(singleDeedErrorSelector);
   const router = useRouter();
 
+  // ===== selectors =====
+  const fetchingErrors = useSelector(singleDeedErrorSelector);
+
+  //===== handlers =====
   const handleSave = (data: ISingleDeedCreate) => {
     dispatch(fetchPostUserDeed(data));
     router.push(`/deeds`);

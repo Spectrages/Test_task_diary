@@ -1,4 +1,8 @@
+
+// =========================== interfaces =====================================
 import { ISingleDeed } from "@/types/deeds/deed-single.interface";
+
+// =========================== mui ============================================
 import { Box, Button, Paper, Typography } from "@mui/material";
 
 const DeedListForm = ({
@@ -12,6 +16,8 @@ const DeedListForm = ({
   handleDelete?: (s: string) => void;
   handleEdit?: (s: string) => void;
 }) => {
+
+  //===== method return date in the correct form ======
   const correctDate = (date: string) => {
     const newDate = new Date(date);
     return newDate.toLocaleString();
