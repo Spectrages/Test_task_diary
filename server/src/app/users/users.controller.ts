@@ -138,6 +138,22 @@ export class UsersController {
     return usersFromDB.map((user) => UserSessionDto.fromEntity(user));
   }
 
+  //=============================== get one =============================================
+  @Get("/:userId")
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Get all users" })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "HttpStatus:200:OK",
+    type: UserByTagDto,
+    isArray: false,
+  })
+  @UsePipes(new ValidationPipe())
+  async getUserById(@Param("userId") userId: string): Promise<UserSessionDto> {
+    const usersFromDB = await this.usersService.getUserById(userId);
+    return UserSessionDto.fromEntity(usersFromDB);
+  }
+
   //  *BLOCK WITH POST REQUESTS
   //=============================== user can create new deed =============================================
   @Post("/deeds")

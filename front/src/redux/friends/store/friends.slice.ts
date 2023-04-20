@@ -4,7 +4,9 @@ import { createSlice } from "@reduxjs/toolkit";
 // ========================== actions ===========================
 import { FriendsState } from "../../../types/friends/friends-state.interface";
 import {
+  fetchAddUserFriend,
   fetchAllUsers,
+  fetchCurrentUserById,
   fetchFriendDeeds,
   fetchGetUserFriends,
   fetchRemoveUserFriend,
@@ -15,17 +17,20 @@ const initialState: FriendsState = {
   friends: [],
   singleFriend: null,
   friendDeeds: [],
+  singleUser: null,
   errors: {
     users: null,
     friends: null,
     singleFriend: null,
     friendDeeds: null,
+    singleUser: null,
   },
   pending: {
     users: false,
     friends: false,
     singleFriend: false,
     friendDeeds: false,
+    singleUser: false,
   },
 };
 
@@ -109,6 +114,42 @@ const friendsSlice = createSlice({
           state.users = [];
           state.errors.users = action.payload;
         }
+      );
+
+    //********************** GET ONE USER ************************/
+    builder
+      .addCase(fetchCurrentUserById.pending, (state) => {
+        state.pending.singleUser = false;
+      })
+      .addCase(fetchCurrentUserById.fulfilled, (state, action) => {
+        state.pending.singleUser = true;
+        state.singleUser = action.payload;
+      })
+      .addCase(
+        fetchCurrentUserById.rejected,
+        (state, action: any & { payload: any }) => {
+          state.pending.singleUser = false;
+          state.singleUser = null;
+          state.errors.singleUser = action.payload;
+        }
+      );
+
+    //********************** ADD TO FRIEND ************************/
+    builder
+      .addCase(fetchAddUserFriend.pending, (state) => {
+        state.pending.singleFriend = false;
+      })
+      .addCase(fetchAddUserFriend.fulfilled, (state, action) => {
+        state.pending.singleFriend = true;
+        state.singleFriend = action.payload;
+      })
+      .addCase(
+        fetchAddUserFriend.rejected,
+        (state, action: any & { payload: any }) => {
+          state.pending.singleFriend = false;
+          state.singleFriend = null;
+          state.errors.singleFriend = action.payload;
+        }
       )
 
       .addDefaultCase(() => {});
@@ -120,6 +161,8 @@ export const { clearErrors } = friendsSlice.actions;
 export {
   fetchGetUserFriends,
   fetchRemoveUserFriend,
+  fetchAddUserFriend,
   fetchFriendDeeds,
   fetchAllUsers,
+  fetchCurrentUserById,
 };

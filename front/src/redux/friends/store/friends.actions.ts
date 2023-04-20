@@ -60,3 +60,15 @@ export const fetchAllUsers = createAsyncThunk(
     }
   }
 );
+
+export const fetchCurrentUserById = createAsyncThunk(
+  "users/getOne",
+  async (userId: string, { rejectWithValue }) => {
+    try {
+      const response = await $api.get(`/users/${userId}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data?.message as string);
+    }
+  }
+);

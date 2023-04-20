@@ -29,11 +29,9 @@ interface IFormInput {
 const SignUpForm = ({
   handleSignUp,
   fetchingErrors,
-  fetchingPending,
 }: {
   handleSignUp: (s: IFormInput) => void;
   fetchingErrors: string | null;
-  fetchingPending: boolean;
 }) => {
   const {
     register,
@@ -205,23 +203,17 @@ const SignUpForm = ({
             width: "100%",
           }}
         >
-          {fetchingPending !== undefined && fetchingPending === true && (
-            <CircularProgress data-testid="pending-stub" />
+          {fetchingErrors === undefined && isValid === true && (
+            <TemporaryTypography
+              variant="overline"
+              align="center"
+              color="success.main"
+              duration={2}
+              data-testid="done-stub"
+            >
+              <DoneIcon />
+            </TemporaryTypography>
           )}
-
-          {fetchingPending !== undefined &&
-            fetchingErrors === undefined &&
-            isValid === true && (
-              <TemporaryTypography
-                variant="overline"
-                align="center"
-                color="success.main"
-                duration={2}
-                data-testid="done-stub"
-              >
-                <DoneIcon />
-              </TemporaryTypography>
-            )}
 
           {fetchingErrors !== undefined && (
             <TemporaryTypography

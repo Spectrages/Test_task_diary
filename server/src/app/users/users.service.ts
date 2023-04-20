@@ -263,4 +263,8 @@ export class UsersService {
 
     return await friendList.filter((item) => item.tag !== currentUser.tag);
   }
+
+  async getUserById(userId: string): Promise<UsersEntity> {
+    return await this.userRepository.getUserById(userId);
+  }
 }

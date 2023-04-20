@@ -1,5 +1,5 @@
 // ========================== react ============================
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 // ========================== mui ==============================
 import { Grid, styled } from "@mui/material";
@@ -53,13 +53,18 @@ const signUp: FC = () => {
   const router = useRouter();
 
   const fecthingErrors = useSelector(signUpErrorSelector);
-  const fetchingPending = useSelector(signUpPendingSelector);
+
+  useEffect(() => {
+    dispatch(clearErrors());
+  }, []);
 
   const handleSignUp = async (data: IFormInput) => {
     const newToken = await dispatch(fetchSignUp(data));
-    window.localStorage.setItem("token", newToken.payload);
-    router.push("/profile");
-    dispatch(clearErrors());
+    if (!fecthingErrors.token) {
+      window.localStorage.setItem("token", newToken.payload);
+      router.push("/profile");
+      dispatch(clearErrors());
+    }
   };
   return (
     <MainGrid>
@@ -76,7 +81,6 @@ const signUp: FC = () => {
           <SignUpForm
             handleSignUp={handleSignUp}
             fetchingErrors={fecthingErrors.token}
-            fetchingPending={fetchingPending.token}
           />
         </Grid>
       </ContentGrid>

@@ -13,7 +13,11 @@ import {
   usersSelector,
 } from "@/redux/friends/store/friends.selectors";
 import { useRouter } from "next/router";
-import { fetchAddUserFriend } from "@/redux/friends/store/friends.actions";
+import {
+  fetchCurrentUserById,
+  fetchGetUserFriends,
+} from "@/redux/friends/store/friends.slice";
+import { useEffect } from "react";
 
 // =========================== styled ===========================
 const Search = styled("div")(({ theme }) => ({
@@ -33,6 +37,7 @@ const Search = styled("div")(({ theme }) => ({
 }));
 
 interface IUserByTag {
+  _id: string;
   tag: string;
   isFriend: boolean;
 }
@@ -41,30 +46,38 @@ const SearchComponent = () => {
   // ===== hooks =====
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+
+  useEffect(() => {
+    dispatch(fetchGetUserFriends());
+  }, []);
+
   const users = useSelector(usersSelector);
   const friends = useSelector(friendsSelector);
 
-  const tagsArray = users.map((item) => item.tag);
-  const friendsTagsArray = friends.map((item) => item.tag);
-  const isFriend = tagsArray.map((item) => friendsTagsArray.includes(item));
-  const result = tagsArray.map((item, index) => {
-    return { tag: item, isFriend: isFriend[index] };
+  const tagsIdsObj = users.map((item) => {
+    return { _id: item._id, tag: item.tag };
   });
+
+  const friendsTagsArray = friends.map((item) => item.tag);
+
+  const isFriend = tagsIdsObj.map((item) =>
+    friendsTagsArray.includes(item.tag)
+  );
+
+  const result = tagsIdsObj.map((item, index) => {
+    return { _id: item._id, tag: item.tag, isFriend: isFriend[index] };
+  });
+
   const autocompleteProps = {
     options: result ?? [],
     getOptionLabel: (option: IUserByTag) => option?.tag ?? "Still fetching...",
   };
 
-  const handleAddToFriend = (tag: string) => {
-    dispatch(fetchAddUserFriend(tag));
+  const handleGoToSingleUserPage = (userId: string) => {
+    dispatch(fetchCurrentUserById(userId));
     router.push({
-      pathname: "/friends",
-    });
-  };
-
-  const handleGoToFriendList = () => {
-    router.push({
-      pathname: "/friends",
+      pathname: "/users/[uid]",
+      query: { uid: userId },
     });
   };
 
@@ -79,7 +92,7 @@ const SearchComponent = () => {
         {...autocompleteProps}
         disablePortal
         clearOnBlur
-        renderOption={(props, { tag, isFriend }: IUserByTag) => (
+        renderOption={(props, { _id, tag, isFriend }: IUserByTag) => (
           <Box
             component="li"
             sx={{
@@ -88,9 +101,7 @@ const SearchComponent = () => {
               alignItems: "center",
             }}
             {...props}
-            onClick={() =>
-              isFriend ? handleGoToFriendList() : handleAddToFriend(tag)
-            }
+            onClick={() => handleGoToSingleUserPage(_id)}
           >
             {isFriend ? (
               <CheckCircleOutlineIcon

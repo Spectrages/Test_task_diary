@@ -43,13 +43,15 @@ interface IFormInput {
 const SignInPage: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const fecthErrors = useSelector(signInErrorSelector);
-
   const router = useRouter();
 
   const handleSignIn = async (data: IFormInput) => {
     const newToken = await dispatch(fetchSignIn(data));
-    window.localStorage.setItem("token", newToken.payload);
-    router.push(`/profile`);
+    if (!fecthErrors.token) {
+      window.localStorage.setItem("token", newToken.payload);
+      router.push(`/profile`);
+      dispatch(clearErrors());
+    }
   };
 
   const handleRedirectToSignUp = () => {

@@ -34,3 +34,12 @@ export const usersErrorSelector = (state: RootState) =>
 
 export const usersPendingSelector = (state: RootState) =>
   state.friends.pending.users;
+
+export const singleUserSelector = (state: RootState) =>
+  state.friends.singleUser;
+
+export const singleUserErrorSelector = (state: RootState) =>
+  state.friends.errors.singleUser;
+
+export const singleUserPendingSelector = (state: RootState) =>
+  state.friends.pending.singleUser;

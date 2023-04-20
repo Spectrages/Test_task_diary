@@ -19,8 +19,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "drop-db": "npm run typeorm schema:drop -- -d ./src/config/data-source.ts",
-    "start-docker-container": "nest start --watch"
+    "drop-db": "npm run typeorm schema:drop -- -d ./src/config/data-source.ts"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",

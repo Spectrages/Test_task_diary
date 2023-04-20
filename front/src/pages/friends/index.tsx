@@ -6,7 +6,7 @@ import styled from "@emotion/styled";
 import { Grid, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { friendsSelector } from "../../redux/friends/store/friends.selectors";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   fetchFriendDeeds,
   fetchGetUserFriends,
@@ -39,6 +39,7 @@ const FriendsListPage = () => {
   const friends = useSelector(friendsSelector);
 
   const handleRemove = (userTag: string) => {
+    dispatch(fetchGetUserFriends());
     dispatch(fetchRemoveUserFriend(userTag));
     dispatch(fetchGetUserFriends());
   };

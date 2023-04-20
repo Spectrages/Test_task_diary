@@ -8,16 +8,19 @@ export interface FriendsState extends BaseState {
   friends: UserSessionDto[] | [];
   singleFriend: UserSessionDto | null;
   friendDeeds: ISingleDeed[] | [];
+  singleUser: UserSessionDto | null;
   errors: {
     users: string | null;
     friends: string | null;
     singleFriend: string | null;
     friendDeeds: string | null;
+    singleUser: string | null;
   };
   pending: {
     users: boolean;
     friends: boolean;
     singleFriend: boolean;
     friendDeeds: boolean;
+    singleUser: boolean;
   };
 }

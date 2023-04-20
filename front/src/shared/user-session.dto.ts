@@ -1,6 +1,7 @@
 import { UUIDDto } from "./uuid-dto.type";
 
 export interface UserSessionDto extends UUIDDto {
+  _id: string;
   email: string;
   firstname: string;
   middlename: string;
